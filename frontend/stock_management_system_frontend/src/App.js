@@ -9,9 +9,10 @@ import Inventories from "./Components/PageContent/Inventories";
 import Items from "./Components/PageContent/Items";
 import Orders from "./Components/PageContent/Orders";
 import Reports from "./Components/PageContent/Reports";
+import "./App.css";
 
 function App() {
-  const [selectedContent, setSelectedContent] = useState("Manage Sellers");
+  const [selectedContent, setSelectedContent] = useState("Sellers");
 
   const renderContent = () => {
     switch (selectedContent) {
@@ -33,14 +34,18 @@ function App() {
   };
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", height: "100vh" }}>
-      <Header />
-      <div style={{ display: "flex", flex: 1 }}>
-        <Sidebar onMenuSelect={(item) => setSelectedContent(item)} />
-        <div style={{ flex: 1, padding: "20px", overflowY: "auto" }}>
-          {renderContent()}
-        </div>
+    <div className="app-container">
+      <div className="fixed-header">
+        <Header />
       </div>
+
+      <div className="main-content">
+        <div className="fixed-sidebar">
+          <Sidebar onMenuSelect={(item) => setSelectedContent(item)} />
+        </div>
+        <div className="scrollable-content">{renderContent()}</div>
+      </div>
+
       <Footer />
     </div>
   );
