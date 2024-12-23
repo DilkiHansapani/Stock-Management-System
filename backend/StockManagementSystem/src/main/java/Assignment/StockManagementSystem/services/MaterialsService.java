@@ -9,7 +9,7 @@ import org.springframework.data.domain.Pageable;
 public interface MaterialsService {
     Materials addMaterial(MaterialDTOWithoutId material);
 
-    public Page<MaterialsDTOWithoutInventories> getMaterials(String materialName, String materialType, Pageable pageable);
+    public Page<MaterialsDTOWithoutInventories> getMaterials(String searchTerm, Pageable pageable);
 
     Materials getMaterialById(int materialId);
 

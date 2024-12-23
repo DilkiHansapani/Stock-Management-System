@@ -36,12 +36,12 @@ public class CategoriesController extends AbstractController {
 
     @GetMapping
     public ResponseEntity<ResponseObject> getCategories(
-            @RequestParam(required = false) String categoryType,
+            @RequestParam(required = false) String searchTerm,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size
     ) {
         try {
-            Page<CategoriesDTOWithoutInventories> categories = categoriesService.getCategories(categoryType, PageRequest.of(page, size));
+            Page<CategoriesDTOWithoutInventories> categories = categoriesService.getCategories(searchTerm, PageRequest.of(page, size));
             return sendSuccessResponse(categories,HttpStatus.OK);
         } catch (InternalServerErrorException ex) {
             return sendErrorResponse(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
