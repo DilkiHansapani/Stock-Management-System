@@ -1,96 +1,202 @@
-import React, { useState } from "react";
-import { Input, Button, Form, Card, notification } from "antd";
-import TableComponent from "../Common/TableComponent";
+import React, { useState, useEffect } from "react";
+import { Input, Button, Form, Card, Table, notification } from "antd";
+import { EditOutlined } from "@ant-design/icons";
 import {
-  addMaterial as apiAddMaterial,
+  addMaterial,
   fetchMaterials,
-  addCategory as apiAddCategory,
+  updateMaterial,
+  addCategory,
   fetchCategories,
 } from "../../Services/ProductsService";
+import { status } from "../../Common files/Constants";
 
 const Products = () => {
   const [materials, setMaterials] = useState([]);
   const [categories, setCategories] = useState([]);
   const [materialSearch, setMaterialSearch] = useState("");
   const [categorySearch, setCategorySearch] = useState("");
-  const [loading, setLoading] = useState(false); // Loading state
+  const [loading, setLoading] = useState(false);
+  const [editingMaterial, setEditingMaterial] = useState(null);
+  const [materialPagination, setMaterialPagination] = useState({
+    page: 1,
+    size: 10,
+    total: 0,
+  });
+  const [categoryPagination, setCategoryPagination] = useState({
+    page: 1,
+    size: 10,
+    total: 0,
+  });
 
   const [materialForm] = Form.useForm();
   const [categoryForm] = Form.useForm();
 
-  const handleAddMaterial = async (values) => {
-    setLoading(true); // Set loading to true
+  const fetchData = async () => {
     try {
-      console.log("values :", values);
-      const newMaterial = await apiAddMaterial(values);
-      setMaterials((prevMaterials) => [...prevMaterials, newMaterial]);
-      materialForm.resetFields();
-      notification.success({ message: "Material added successfully!" });
+      const materialResponse = await fetchMaterials({
+        materialSearch,
+        pagination: {
+          ...materialPagination,
+          page: materialPagination.page - 1,
+        },
+      });
+
+      const materials = materialResponse.data.content;
+      const transformedData = materials.map((material) => ({
+        ...material,
+        key: materials.materialId,
+      }));
+
+      setMaterials(transformedData || []);
+      const categoryResponse = await fetchCategories({
+        categorySearch,
+        pagination: {
+          ...categoryPagination,
+          page: categoryPagination.page - 1,
+        },
+      });
+
+      setCategories(categoryResponse.data.content || []);
+    } catch (error) {
+      notification.error({ message: "Failed to fetch data." });
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, [
+    categorySearch,
+    materialSearch,
+    categoryPagination.page,
+    materialPagination.page,
+  ]);
+
+  const handleAddMaterial = async (values) => {
+    setLoading(true);
+    try {
+      const materialResponse = await addMaterial(values);
+      if (materialResponse.status === status.HttpStatusString.CREATED) {
+        materialForm.resetFields();
+        notification.success({ message: "Material added successfully!" });
+        fetchData();
+      }
     } catch (error) {
       notification.error({ message: "Failed to add material." });
     } finally {
-      setLoading(false); // Set loading to false
+      setLoading(false);
     }
   };
 
   const handleAddCategory = async (values) => {
-    setLoading(true); // Set loading to true
+    setLoading(true);
     try {
-      const newCategory = await apiAddCategory(values);
-      setCategories((prevCategories) => [...prevCategories, newCategory]);
-      categoryForm.resetFields();
-      notification.success({ message: "Category added successfully!" });
+      const categoryResponse = await addCategory(values);
+      if (categoryResponse.status === status.HttpStatusString.CREATED) {
+        materialForm.resetFields();
+        notification.success({ message: "Material added successfully!" });
+        fetchData();
+      }
     } catch (error) {
       notification.error({ message: "Failed to add category." });
     } finally {
-      setLoading(false); // Set loading to false
+      setLoading(false);
     }
   };
 
   const handleMaterialSearch = (value) => {
     setMaterialSearch(value);
+    fetchData();
   };
 
   const handleCategorySearch = (value) => {
     setCategorySearch(value);
+    fetchData();
   };
 
-  const filteredMaterials = materials.filter(
-    (material) =>
-      material.materialName
-        .toLowerCase()
-        .includes(materialSearch.toLowerCase()) ||
-      material.materialType.toLowerCase().includes(materialSearch.toLowerCase())
-  );
+  const handleEditMaterial = (record) => {
+    setEditingMaterial(record);
+    materialForm.setFieldsValue(record);
+  };
 
-  const filteredCategories = categories.filter((category) =>
-    category.categoryType.toLowerCase().includes(categorySearch.toLowerCase())
-  );
+  const handleUpdateMaterial = async (values) => {
+    setLoading(true);
+    try {
+      const response = await updateMaterial(editingMaterial.materialId, values);
+      if (response.status === status.HttpStatusString.OK) {
+        notification.success({ message: "Material updated successfully!" });
+        fetchData();
+        setEditingMaterial(null);
+        materialForm.resetFields();
+      }
+    } catch (error) {
+      notification.error({ message: "Failed to update material." });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const materialColumns = [
-    { title: "Material Name", dataIndex: "materialName", key: "materialName" },
-    { title: "Material Type", dataIndex: "materialType", key: "materialType" },
+    {
+      title: "Material Name",
+      dataIndex: "materialName",
+      key: "materialName",
+      filters: categories.map((category) => ({
+        text: category.categoryType,
+        value: category.categoryType,
+      })),
+      onFilter: (value, record) => record.materialName.includes(value),
+      sorter: (a, b) => a.materialName.localeCompare(b.materialName),
+    },
+    {
+      title: "Material Type",
+      dataIndex: "materialType",
+      key: "materialType",
+      sorter: (a, b) => a.materialType.localeCompare(b.materialType),
+    },
+    {
+      title: "Action",
+      key: "action",
+      render: (_, record) => (
+        <Button
+          icon={<EditOutlined />}
+          onClick={() => handleEditMaterial(record)}
+        >
+          Edit
+        </Button>
+      ),
+    },
   ];
 
   const categoryColumns = [
-    { title: "Category Type", dataIndex: "categoryType", key: "categoryType" },
+    {
+      title: "Category Type",
+      dataIndex: "categoryType",
+      key: "categoryType",
+      sorter: (a, b) => a.categoryType.localeCompare(b.categoryType),
+    },
   ];
+
+  const handleTableChange = (pagination, filters, sorter) => {
+    fetchData(pagination, filters, sorter);
+  };
 
   return (
     <div>
-      <h2>Manage Product Component</h2>
+      <h2 style={{ marginTop: "-5px" }}>Manage Product Component</h2>
       <div style={{ display: "flex", gap: "20px" }}>
         <Card
           title="Materials"
           style={{
             flex: 2,
-            border: "1px solid #d9d9d9", // Light gray border
-            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)", // Subtle shadow
+            border: "1px solid #d9d9d9",
+            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
           }}
         >
           <Form
             form={materialForm}
-            onFinish={handleAddMaterial}
+            onFinish={
+              editingMaterial ? handleUpdateMaterial : handleAddMaterial
+            }
             layout="inline"
           >
             <Form.Item
@@ -113,8 +219,19 @@ const Products = () => {
             </Form.Item>
             <Form.Item>
               <Button type="primary" htmlType="submit" loading={loading}>
-                Add Material
+                {editingMaterial ? "Update Material" : "Add Material"}
               </Button>
+              {editingMaterial && (
+                <Button
+                  style={{ marginLeft: 8 }}
+                  onClick={() => {
+                    setEditingMaterial(null);
+                    materialForm.resetFields();
+                  }}
+                >
+                  Cancel
+                </Button>
+              )}
             </Form.Item>
           </Form>
 
@@ -127,11 +244,13 @@ const Products = () => {
             style={{ marginTop: "20px", marginBottom: "10px", width: "98%" }}
           />
 
-          <TableComponent
+          <Table
             columns={materialColumns}
-            data={filteredMaterials}
-            loading={false}
+            dataSource={materials}
+            rowKey="materialId"
+            loading={loading}
             pagination={{ pageSize: 5 }}
+            onChange={handleTableChange}
           />
         </Card>
 
@@ -139,8 +258,8 @@ const Products = () => {
           title="Categories"
           style={{
             flex: 1,
-            border: "1px solid #d9d9d9", // Light gray border
-            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)", // Subtle shadow
+            border: "1px solid #d9d9d9",
+            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
           }}
         >
           <Form
@@ -170,14 +289,15 @@ const Products = () => {
             enterButton="Search"
             size="large"
             onSearch={handleCategorySearch}
-            style={{ marginTop: "20px", marginBottom: "10px", width: "96%" }}
+            style={{ marginTop: "20px", marginBottom: "10px", width: "98%" }}
           />
 
-          <TableComponent
+          <Table
             columns={categoryColumns}
-            data={filteredCategories}
-            loading={false}
+            dataSource={categories}
+            loading={loading}
             pagination={{ pageSize: 5 }}
+            onChange={handleTableChange}
           />
         </Card>
       </div>
