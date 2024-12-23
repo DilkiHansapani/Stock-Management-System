@@ -23,7 +23,8 @@ public class SellersController extends AbstractController {
     @PostMapping
     public ResponseEntity<ResponseObject> addSeller(@RequestBody SellerDTOWitohutId seller) {
         try {
-            return sendCreatedResponse(sellersService.addSeller(seller));
+            System.out.println("add seller :"+seller);
+            return sendCreatedResponse(sellersService.addSeller(seller),HttpStatus.CREATED);
         } catch (DuplicateResourceException ex) {
             return sendErrorResponse(ex.getMessage(), HttpStatus.CONFLICT);
         } catch (InternalServerErrorException ex) {
@@ -33,13 +34,12 @@ public class SellersController extends AbstractController {
 
     @GetMapping
     public ResponseEntity<ResponseObject> getSellers(
-            @RequestParam(required = false) String sellerName,
-            @RequestParam(required = false) String email,
+            @RequestParam(required = false) String searchTerm,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size
     ) {
         try {
-            return sendSuccessResponse(sellersService.getSellers(sellerName, email, PageRequest.of(page, size)));
+            return sendSuccessResponse(sellersService.getSellers(searchTerm, PageRequest.of(page, size)),HttpStatus.OK);
         } catch (InternalServerErrorException ex) {
             return sendErrorResponse(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -51,7 +51,7 @@ public class SellersController extends AbstractController {
             @RequestBody SellerDTOWitohutId updatedSeller
     ) {
         try {
-            return sendSuccessResponse(sellersService.updateSeller(sellerId, updatedSeller));
+            return sendSuccessResponse(sellersService.updateSeller(sellerId, updatedSeller),HttpStatus.OK);
         } catch (BadRequestException ex) {
             return sendErrorResponse(ex.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (ResourceNotFoundException ex) {

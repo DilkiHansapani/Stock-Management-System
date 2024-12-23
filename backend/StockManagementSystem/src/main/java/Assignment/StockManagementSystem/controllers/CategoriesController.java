@@ -26,7 +26,7 @@ public class CategoriesController extends AbstractController {
     @PostMapping
     public ResponseEntity<ResponseObject> addCategory(@RequestBody Categories category) {
         try {
-            return sendCreatedResponse(categoriesService.addCategory(category));
+            return sendCreatedResponse(categoriesService.addCategory(category),HttpStatus.CREATED);
         } catch (DuplicateResourceException ex) {
             return sendErrorResponse(ex.getMessage(), HttpStatus.CONFLICT);
         } catch (InternalServerErrorException ex) {
@@ -42,7 +42,7 @@ public class CategoriesController extends AbstractController {
     ) {
         try {
             Page<CategoriesDTOWithoutInventories> categories = categoriesService.getCategories(categoryType, PageRequest.of(page, size));
-            return sendSuccessResponse(categories);
+            return sendSuccessResponse(categories,HttpStatus.OK);
         } catch (InternalServerErrorException ex) {
             return sendErrorResponse(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -55,7 +55,7 @@ public class CategoriesController extends AbstractController {
     ) {
         try {
             Categories result = categoriesService.updateCategory(categoryId, updatedCategory);
-            return sendSuccessResponse(result);
+            return sendSuccessResponse(result,HttpStatus.OK);
         } catch (BadRequestException ex) {
             return sendErrorResponse(ex.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (ResourceNotFoundException ex) {

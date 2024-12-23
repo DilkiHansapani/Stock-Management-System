@@ -23,7 +23,7 @@ public class MaterialsController extends AbstractController {
     @PostMapping
     public ResponseEntity<ResponseObject> addMaterial(@RequestBody MaterialDTOWithoutId material) {
         try {
-            return sendCreatedResponse(materialsService.addMaterial(material));
+            return sendCreatedResponse(materialsService.addMaterial(material),HttpStatus.CREATED);
         } catch (DuplicateResourceException ex) {
             return sendErrorResponse(ex.getMessage(), HttpStatus.CONFLICT);
         } catch (InternalServerErrorException ex) {
@@ -39,7 +39,7 @@ public class MaterialsController extends AbstractController {
             @RequestParam(defaultValue = "10") int size
     ) {
         try {
-            return sendSuccessResponse(materialsService.getMaterials(materialName, materialType, PageRequest.of(page, size)));
+            return sendSuccessResponse(materialsService.getMaterials(materialName, materialType, PageRequest.of(page, size)),HttpStatus.OK);
         } catch (InternalServerErrorException ex) {
             return sendErrorResponse(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -51,7 +51,7 @@ public class MaterialsController extends AbstractController {
             @RequestBody MaterialDTOWithoutId updatedMaterial
     ) {
         try {
-            return sendSuccessResponse(materialsService.updateMaterial(materialId, updatedMaterial));
+            return sendSuccessResponse(materialsService.updateMaterial(materialId, updatedMaterial),HttpStatus.OK);
         } catch (BadRequestException ex) {
             return sendErrorResponse(ex.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (ResourceNotFoundException ex) {

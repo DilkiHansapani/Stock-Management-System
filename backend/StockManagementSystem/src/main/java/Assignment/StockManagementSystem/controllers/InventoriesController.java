@@ -26,7 +26,7 @@ public class InventoriesController extends AbstractController {
     @PostMapping
     public ResponseEntity<ResponseObject> addInventory(@RequestBody InventoryDTOWithoutId inventory) {
         try {
-            return sendCreatedResponse(inventoriesService.addInventory(inventory));
+            return sendCreatedResponse(inventoriesService.addInventory(inventory),HttpStatus.CREATED);
         } catch (InternalServerErrorException ex) {
             return sendErrorResponse(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -56,7 +56,7 @@ public class InventoriesController extends AbstractController {
             @RequestParam(defaultValue = "10") int size
     ) {
         try {
-            return sendSuccessResponse(inventoriesService.getInventories(materialName, sellerName, categoryType, PageRequest.of(page, size)));
+            return sendSuccessResponse(inventoriesService.getInventories(materialName, sellerName, categoryType, PageRequest.of(page, size)),HttpStatus.OK);
         } catch (InternalServerErrorException ex) {
             return sendErrorResponse(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -68,7 +68,7 @@ public class InventoriesController extends AbstractController {
             @RequestBody InventoryDTOWithoutId updatedInventory
     ) {
         try {
-            return sendSuccessResponse(inventoriesService.updateInventory(inventoryId, updatedInventory));
+            return sendSuccessResponse(inventoriesService.updateInventory(inventoryId, updatedInventory),HttpStatus.OK);
         } catch (BadRequestException ex) {
             return sendErrorResponse(ex.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (ResourceNotFoundException ex) {
