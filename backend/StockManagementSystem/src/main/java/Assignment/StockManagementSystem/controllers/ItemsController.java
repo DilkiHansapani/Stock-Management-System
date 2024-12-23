@@ -36,7 +36,7 @@ public class ItemsController extends AbstractController {
         try {
             Pageable pageable = PageRequest.of(page, size);
             Page<ItemsDTOWithoutInventories> items = itemsService.getItems(itemCode, startDateTime, endDateTime, status, pageable);
-            return sendSuccessResponse(items);
+            return sendSuccessResponse(items,HttpStatus.OK);
         } catch (BadRequestException ex) {
             return sendErrorResponse(ex.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (InternalServerErrorException ex) {
@@ -50,7 +50,7 @@ public class ItemsController extends AbstractController {
             @RequestBody Items updatedItem) {
         try {
             Items result = itemsService.updateItem(itemCode, updatedItem);
-            return sendSuccessResponse(result);
+            return sendSuccessResponse(result,HttpStatus.OK);
         } catch (BadRequestException ex) {
             return sendErrorResponse(ex.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (ResourceNotFoundException ex) {

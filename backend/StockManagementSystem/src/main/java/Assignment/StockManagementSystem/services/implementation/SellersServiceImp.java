@@ -38,28 +38,36 @@ public class SellersServiceImp implements SellersService {
                 throw new DuplicateResourceException(ErrorMessages.ERR_MSG_DUBLICATE_VALUE);
             }
             Sellers seller = new Sellers();
-            modelMapper.map(sellerDTO,seller);
+
+            mapSellerDTOToEntity(sellerDTO, seller);
+
+            seller.setStatus("Active");
             return sellersRepository.save(seller);
-        }catch (DuplicateResourceException ex){
-            logger.error("Seller Email Already Exist",ex);
+        } catch (DuplicateResourceException ex) {
+            logger.error("Seller Email Already Exist", ex);
             throw new DuplicateResourceException(ErrorMessages.ERR_MSG_DUBLICATE_VALUE);
         } catch (Exception ex) {
-            logger.error("Error occurred adding seller {}",sellerDTO.getEmail(),ex);
+            logger.error("Error occurred adding seller {}", sellerDTO.getEmail(), ex);
             throw new InternalServerErrorException(ErrorMessages.ERR_MSG_INTERNAL_SERVER_ERROR);
         }
     }
 
     @Override
-    public Page<SellerDTOWithoutInventories> getSellers(String sellerName, String email, Pageable pageable) {
+    public Page<SellerDTOWithoutInventories> getSellers(String searchTerm, Pageable pageable) {
         try {
-            Page<Sellers> sellers = sellersRepository.findSellers(sellerName, email, pageable);
+            if (searchTerm == null || searchTerm.trim().isEmpty()) {
+                return sellersRepository.findSellers(null, pageable)
+                        .map(this::convertToSellerDTO);
+            }
 
+            Page<Sellers> sellers = sellersRepository.findSellers(searchTerm, pageable);
             return sellers.map(this::convertToSellerDTO);
         } catch (Exception ex) {
             logger.error("Error occurred retrieving sellers", ex);
             throw new InternalServerErrorException(ErrorMessages.ERR_MSG_INTERNAL_SERVER_ERROR);
         }
     }
+
 
 
     @Override
@@ -80,7 +88,7 @@ public class SellersServiceImp implements SellersService {
     @Override
     public Sellers updateSeller(int sellerId, SellerDTOWitohutId updatedSeller) {
         try {
-            if (sellerId<= 0) {
+            if (sellerId <= 0) {
                 throw new BadRequestException("Seller ID must be a valid number.");
             }
 
@@ -93,8 +101,8 @@ public class SellersServiceImp implements SellersService {
                     throw new DuplicateResourceException("Email " + updatedSeller.getEmail() + " is already in use.");
                 }
             }
-            modelMapper.map(updatedSeller, existingSeller);
 
+            mapSellerDTOToEntity(updatedSeller, existingSeller);
             return sellersRepository.save(existingSeller);
         } catch (ResourceNotFoundException | BadRequestException | DuplicateResourceException ex) {
             throw ex;
@@ -113,6 +121,14 @@ public class SellersServiceImp implements SellersService {
         dto.setContact(seller.getContact());
         dto.setStatus(seller.getStatus());
         return dto;
+    }
+
+    private void mapSellerDTOToEntity(SellerDTOWitohutId sellerDTO, Sellers seller) {
+        seller.setSellerName(sellerDTO.getSellerName());
+        seller.setEmail(sellerDTO.getEmail());
+        seller.setContact(sellerDTO.getContact());
+        seller.setAddress(sellerDTO.getAddress());
+        seller.setStatus(sellerDTO.getStatus() != null ? sellerDTO.getStatus() : "Active");
     }
 
 }

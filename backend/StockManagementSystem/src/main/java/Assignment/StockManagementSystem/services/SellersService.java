@@ -12,7 +12,7 @@ public interface SellersService {
 
     public Sellers addSeller(SellerDTOWitohutId seller);
 
-    public Page<SellerDTOWithoutInventories> getSellers(String sellerName, String email, Pageable pageable);
+    public Page<SellerDTOWithoutInventories> getSellers(String searchTerm, Pageable pageable);
 
     public Sellers getSellerById(int sellerId);
 

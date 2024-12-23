@@ -5,7 +5,9 @@ import Assignment.StockManagementSystem.dto.CategoryDTOWithoutId;
 import Assignment.StockManagementSystem.models.Categories;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
+@Service
 public interface CategoriesService {
 
     public Categories addCategory(Categories category);

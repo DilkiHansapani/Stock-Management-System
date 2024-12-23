@@ -18,12 +18,12 @@ public interface SellersRepository extends JpaRepository<Sellers,Integer> {
     Optional<Sellers> findByEmail(String email);
 
     @Query("SELECT s FROM Sellers s " +
-            "WHERE (:sellerName IS NULL OR :sellerName = '' OR s.sellerName LIKE %:sellerName%) " +
-            "AND (:email IS NULL OR :email = '' OR s.email LIKE %:email%)")
+            "WHERE (:searchTerm IS NULL OR :searchTerm = '' OR " +
+            "s.sellerName LIKE %:searchTerm% OR s.email LIKE %:searchTerm%)")
     Page<Sellers> findSellers(
-            @Param("sellerName") String sellerName,
-            @Param("email") String email,
+            @Param("searchTerm") String searchTerm,
             Pageable pageable);
+
 
 
 
