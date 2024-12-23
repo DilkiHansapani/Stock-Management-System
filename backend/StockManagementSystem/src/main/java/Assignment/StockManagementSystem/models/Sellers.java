@@ -36,6 +36,7 @@ public class Sellers {
     private String status;
 
     @OneToMany(mappedBy = "seller")
+    @JsonIgnore
     private List<Inventories> inventories;
 
     public int getSellerId() {

@@ -9,12 +9,12 @@ public abstract class AbstractController {
         return new ResponseEntity<>(new ResponseObject(data, status), status);
     }
 
-    protected <T> ResponseEntity<ResponseObject> sendSuccessResponse(T data) {
-        return sendResponse(data, HttpStatus.OK);
+    protected <T> ResponseEntity<ResponseObject> sendSuccessResponse(T data,HttpStatus status) {
+        return sendResponse(data, status);
     }
 
-    protected <T> ResponseEntity<ResponseObject> sendCreatedResponse(T data) {
-        return sendResponse(data, HttpStatus.CREATED);
+    protected <T> ResponseEntity<ResponseObject> sendCreatedResponse(T data,HttpStatus status) {
+        return sendResponse(data, status);
     }
 
     protected <T> ResponseEntity<ResponseObject> sendErrorResponse(String message, HttpStatus status){
