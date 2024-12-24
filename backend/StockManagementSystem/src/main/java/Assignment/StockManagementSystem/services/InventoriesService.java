@@ -12,7 +12,7 @@ public interface InventoriesService {
 
     Inventories addInventory(InventoryDTOWithoutId inventoryRequestDTO);
 
-    Page<InventoryDTOWithoutItems> getInventories(String materialName, String sellerName, String categoryType, Pageable pageable);
+    Page<InventoryDTOWithoutItems> getInventories(String searchTerm, Pageable pageable);
 
     Inventories updateInventory(int inventoryId, InventoryDTOWithoutId updatedInventory);
 

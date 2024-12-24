@@ -33,14 +33,22 @@ public class MaterialsController extends AbstractController {
 
     @GetMapping
     public ResponseEntity<ResponseObject> getMaterials(
-            @RequestParam(required = false) String materialName,
-            @RequestParam(required = false) String materialType,
+            @RequestParam(required = false) String searchTerm,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size
     ) {
         try {
-            return sendSuccessResponse(materialsService.getMaterials(materialName, materialType, PageRequest.of(page, size)),HttpStatus.OK);
+            return sendSuccessResponse(materialsService.getMaterials(searchTerm, PageRequest.of(page, size)),HttpStatus.OK);
         } catch (InternalServerErrorException ex) {
+            return sendErrorResponse(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/all")
+    public  ResponseEntity<ResponseObject> getAllMaterials(){
+        try {
+            return sendSuccessResponse(materialsService.getAllMaterials(), HttpStatus.OK);
+        }catch (InternalServerErrorException ex) {
             return sendErrorResponse(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

@@ -37,6 +37,7 @@ public class Inventories {
     private int quantity;
 
     @OneToMany(mappedBy = "inventory")
+    @JsonIgnore
     private List<Items> items;
 
     public int getInventoryId() {
