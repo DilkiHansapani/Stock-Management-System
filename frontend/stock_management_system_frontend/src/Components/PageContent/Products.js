@@ -140,11 +140,6 @@ const Products = () => {
       title: "Material Name",
       dataIndex: "materialName",
       key: "materialName",
-      filters: categories.map((category) => ({
-        text: category.categoryType,
-        value: category.categoryType,
-      })),
-      onFilter: (value, record) => record.materialName.includes(value),
       sorter: (a, b) => a.materialName.localeCompare(b.materialName),
     },
     {

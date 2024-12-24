@@ -1,7 +1,6 @@
 import api from "../APIs/AxiosInstance";
 
 export const fetchMaterials = async ({ materialSearch, pagination }) => {
-  console.log("material filter value :", materialSearch);
   const params = {
     searchTerm: materialSearch,
     page: pagination?.page || 0,
@@ -10,6 +9,11 @@ export const fetchMaterials = async ({ materialSearch, pagination }) => {
 
   const response = await api.get("/materials", { params });
   return response.data;
+};
+
+export const getAllMaterials = async () => {
+  const response = await api.get("materials/all");
+  return response;
 };
 
 export const addMaterial = async (materialData) => {
@@ -30,6 +34,11 @@ export const fetchCategories = async ({ categorySearch, pagination }) => {
   };
   const response = await api.get("/categories", { params });
   return response.data;
+};
+
+export const getAllCategories = async () => {
+  const response = await api.get("categories/all");
+  return response;
 };
 
 export const addCategory = async (categoryData) => {

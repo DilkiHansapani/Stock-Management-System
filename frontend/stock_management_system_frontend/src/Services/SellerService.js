@@ -11,9 +11,13 @@ export const fetchSellers = async ({ filters, pagination }) => {
   return response.data;
 };
 
+export const getAllSellers = async () => {
+  const response = await api.get("sellers/all");
+  return response;
+};
+
 export const addSeller = async (sellerData) => {
   const response = await api.post("/sellers", sellerData);
-  console.log("add seller response :", response);
   return response;
 };
 

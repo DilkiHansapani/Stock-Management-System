@@ -1,9 +1,9 @@
 import api from "../APIs/AxiosInstance";
 
-export const fetchInventories = async ({ filters, pagination }) => {
+export const fetchInventories = async ({ searchTerm, pagination }) => {
   const params = {
-    ...filters,
-    page: pagination?.page || 1,
+    searchTerm: searchTerm,
+    page: pagination?.page || 0,
     size: pagination?.size || 10,
   };
 
@@ -12,11 +12,11 @@ export const fetchInventories = async ({ filters, pagination }) => {
 };
 
 export const addInventory = async (inventoryData) => {
-  const response = await api.post("/inventory", inventoryData);
+  const response = await api.post("/inventories", inventoryData);
   return response.data;
 };
 
 export const updateInventory = async (inventoryId, updatedData) => {
-  const response = await api.put(`/inventory/${inventoryId}`, updatedData);
+  const response = await api.put(`/inventories/${inventoryId}`, updatedData);
   return response.data;
 };
