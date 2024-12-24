@@ -65,9 +65,9 @@ public class InventoriesServiceImp implements InventoriesService {
     }
 
     @Override
-    public Page<InventoryDTOWithoutItems> getInventories(String materialName, String sellerName, String categoryType, Pageable pageable) {
+    public Page<InventoryDTOWithoutItems> getInventories(String searchTerm, Pageable pageable) {
         try {
-            Page<Inventories> inventories = inventoriesRepository.getInventories(materialName, sellerName, categoryType, pageable);
+            Page<Inventories> inventories = inventoriesRepository.getInventories(searchTerm, pageable);
 
             return inventories.map(this::convertToInventoryDTO);
         } catch (Exception ex) {

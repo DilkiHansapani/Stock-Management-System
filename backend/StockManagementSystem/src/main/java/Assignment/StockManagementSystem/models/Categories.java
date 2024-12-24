@@ -25,6 +25,7 @@ public class Categories {
     private String categoryType;
 
     @OneToMany(mappedBy = "category")
+    @JsonIgnore
     private List<Inventories> inventories;
 
     public int getCategoryId() {

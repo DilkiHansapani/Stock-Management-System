@@ -19,6 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -59,6 +60,15 @@ public class CategoriesServiceImp implements CategoriesService {
 
             return categories.map(this::convertToCategoryDTO);
         } catch (Exception ex) {
+            logger.error("Error occurred retrieving categories", ex);
+            throw new InternalServerErrorException(ErrorMessages.ERR_MSG_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public List<Categories> getAllCategories(){
+        try{
+            return categoriesRepository.findAll();
+        }catch (Exception ex) {
             logger.error("Error occurred retrieving categories", ex);
             throw new InternalServerErrorException(ErrorMessages.ERR_MSG_INTERNAL_SERVER_ERROR);
         }

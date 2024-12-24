@@ -18,6 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -64,6 +65,16 @@ public class SellersServiceImp implements SellersService {
             return sellers.map(this::convertToSellerDTO);
         } catch (Exception ex) {
             logger.error("Error occurred retrieving sellers", ex);
+            throw new InternalServerErrorException(ErrorMessages.ERR_MSG_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Override
+    public List<Sellers> getAllSellers(){
+        try{
+            return sellersRepository.findAll();
+        }catch (Exception ex){
+            logger.error("Internal server error");
             throw new InternalServerErrorException(ErrorMessages.ERR_MSG_INTERNAL_SERVER_ERROR);
         }
     }

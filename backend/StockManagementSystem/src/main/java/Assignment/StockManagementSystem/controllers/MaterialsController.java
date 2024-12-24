@@ -44,6 +44,15 @@ public class MaterialsController extends AbstractController {
         }
     }
 
+    @GetMapping("/all")
+    public  ResponseEntity<ResponseObject> getAllMaterials(){
+        try {
+            return sendSuccessResponse(materialsService.getAllMaterials(), HttpStatus.OK);
+        }catch (InternalServerErrorException ex) {
+            return sendErrorResponse(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @PutMapping("/{materialId}")
     public ResponseEntity<ResponseObject> updateMaterial(
             @PathVariable int materialId,

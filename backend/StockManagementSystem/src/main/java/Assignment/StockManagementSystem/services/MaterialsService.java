@@ -6,12 +6,16 @@ import Assignment.StockManagementSystem.models.Materials;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 public interface MaterialsService {
-    Materials addMaterial(MaterialDTOWithoutId material);
+    public Materials addMaterial(MaterialDTOWithoutId material);
 
     public Page<MaterialsDTOWithoutInventories> getMaterials(String searchTerm, Pageable pageable);
 
-    Materials getMaterialById(int materialId);
+    public Materials getMaterialById(int materialId);
 
-    Materials updateMaterial(int materialId, MaterialDTOWithoutId updatedMaterial);
+    public List<Materials> getAllMaterials();
+
+    public Materials updateMaterial(int materialId, MaterialDTOWithoutId updatedMaterial);
 }

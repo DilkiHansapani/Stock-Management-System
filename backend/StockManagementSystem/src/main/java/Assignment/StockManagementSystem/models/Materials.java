@@ -25,6 +25,7 @@ public class Materials {
     private String materialType;
 
     @OneToMany(mappedBy = "material")
+    @JsonIgnore
     private List<Inventories> inventories;
 
     public int getMaterialId() {

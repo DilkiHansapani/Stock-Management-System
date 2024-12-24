@@ -19,6 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -86,6 +87,16 @@ public class MaterialsServiceImp implements MaterialsService {
         }catch (ResourceNotFoundException ex){
             logger.error("Material not found with ID: " + materialId);
             throw ex;
+        }catch (Exception ex) {
+            logger.error("Error occurred retrieving materials", ex);
+            throw new InternalServerErrorException(ErrorMessages.ERR_MSG_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Override
+    public List<Materials> getAllMaterials(){
+        try{
+            return materialsRepository.findAll();
         }catch (Exception ex) {
             logger.error("Error occurred retrieving materials", ex);
             throw new InternalServerErrorException(ErrorMessages.ERR_MSG_INTERNAL_SERVER_ERROR);

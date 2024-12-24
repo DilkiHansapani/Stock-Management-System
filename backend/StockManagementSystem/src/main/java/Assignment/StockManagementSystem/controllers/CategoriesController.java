@@ -48,6 +48,15 @@ public class CategoriesController extends AbstractController {
         }
     }
 
+    @GetMapping("/all")
+    public  ResponseEntity<ResponseObject> getAllCategories(){
+        try {
+            return sendSuccessResponse(categoriesService.getAllCategories(), HttpStatus.OK);
+        }catch (InternalServerErrorException ex) {
+            return sendErrorResponse(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @PutMapping("/{categoryId}")
     public ResponseEntity<ResponseObject> updateCategory(
             @PathVariable int categoryId,
