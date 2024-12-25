@@ -1,5 +1,6 @@
 package Assignment.StockManagementSystem.controllers;
 
+import Assignment.StockManagementSystem.dto.InventoryBulkUpdateDTO;
 import Assignment.StockManagementSystem.dto.InventoryDTOWithoutId;
 import Assignment.StockManagementSystem.repositories.InventoriesRepository;
 import Assignment.StockManagementSystem.services.InventoriesService;
@@ -32,21 +33,6 @@ public class InventoriesController extends AbstractController {
         }
     }
 
-//    @GetMapping
-//    public ResponseEntity<ResponseObject> getInventories(
-//            @RequestParam(required = false) String materialName,
-//            @RequestParam(required = false) String sellerName,
-//            @RequestParam(required = false) String categoryType,
-//            @RequestParam(defaultValue = "0") int page,
-//            @RequestParam(defaultValue = "10") int size
-//    ) {
-//        try {
-//            return sendSuccessResponse(inventoriesRepository.findAll());
-//        } catch (InternalServerErrorException ex) {
-//            return sendErrorResponse(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//    }
-
     @GetMapping
     public ResponseEntity<ResponseObject> getInventories(
             @RequestParam(required = false) String searchTerm,
@@ -63,10 +49,10 @@ public class InventoriesController extends AbstractController {
     @PutMapping("/{inventoryId}")
     public ResponseEntity<ResponseObject> updateInventory(
             @PathVariable int inventoryId,
-            @RequestBody InventoryDTOWithoutId updatedInventory
+            @RequestBody InventoryBulkUpdateDTO updatedInventoryBulk
     ) {
         try {
-            return sendSuccessResponse(inventoriesService.updateInventory(inventoryId, updatedInventory),HttpStatus.OK);
+            return sendSuccessResponse(inventoriesService.updateInventory(inventoryId, updatedInventoryBulk),HttpStatus.OK);
         } catch (BadRequestException ex) {
             return sendErrorResponse(ex.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (ResourceNotFoundException ex) {

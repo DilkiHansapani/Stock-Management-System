@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class ItemsServiceImp implements ItemsService {
@@ -134,4 +135,9 @@ public class ItemsServiceImp implements ItemsService {
 
         return dto;
     }
+
+    public List<Items> getItemsByInventory(Inventories inventory, int bulkQuantity) {
+        return itemsRepository.findFirstNByInventoryOrderByDateTimeAsc(inventory, bulkQuantity);
+    }
+
 }

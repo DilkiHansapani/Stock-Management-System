@@ -1,5 +1,6 @@
 package Assignment.StockManagementSystem.services;
 
+import Assignment.StockManagementSystem.dto.InventoryBulkUpdateDTO;
 import Assignment.StockManagementSystem.dto.InventoryDTOWithoutId;
 import Assignment.StockManagementSystem.dto.InventoryDTOWithoutItems;
 import Assignment.StockManagementSystem.models.Inventories;
@@ -14,6 +15,6 @@ public interface InventoriesService {
 
     Page<InventoryDTOWithoutItems> getInventories(String searchTerm, Pageable pageable);
 
-    Inventories updateInventory(int inventoryId, InventoryDTOWithoutId updatedInventory);
+    Inventories updateInventory(int inventoryId, InventoryBulkUpdateDTO updatedInventory);
 
 }

@@ -10,7 +10,7 @@ public class ItemsUtil {
     }
 
     public static float calculateSellingPrice(float buyingPrice, float profitPercentage, float salePercentage,
-                                              float stockClearingPrice, String status) {
+                                              float existingSellingPrice, String status) {
         float sellingPrice;
         switch (status.toLowerCase()) {
             case "sale":
@@ -22,12 +22,14 @@ public class ItemsUtil {
             case "normal":
                 sellingPrice = buyingPrice * (1 + profitPercentage / 100);
                 break;
-            case "stockclearing":
-                sellingPrice = stockClearingPrice;
+            case "stockClearing":
+                sellingPrice = existingSellingPrice;
                 break;
             default:
                 throw new IllegalArgumentException("Invalid status: " + status);
         }
         return sellingPrice;
     }
+
+
 }

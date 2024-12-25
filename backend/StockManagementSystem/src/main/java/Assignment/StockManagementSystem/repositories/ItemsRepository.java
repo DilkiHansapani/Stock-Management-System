@@ -1,5 +1,6 @@
 package Assignment.StockManagementSystem.repositories;
 
+import Assignment.StockManagementSystem.models.Inventories;
 import Assignment.StockManagementSystem.models.Items;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,6 +11,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 @Repository
 public interface ItemsRepository extends JpaRepository<Items,String> {
@@ -24,6 +26,10 @@ public interface ItemsRepository extends JpaRepository<Items,String> {
                           @Param("endDateTime") LocalDateTime endDateTime,
                           @Param("status") String status,
                           Pageable pageable);
+
+
+    @Query("SELECT i FROM Items i WHERE i.inventory = :inventory ORDER BY i.dateTime ASC LIMIT :bulkQuantity")
+    List<Items> findFirstNByInventoryOrderByDateTimeAsc(@Param("inventory") Inventories inventory, @Param("bulkQuantity") int bulkQuantity);
 
 
 }

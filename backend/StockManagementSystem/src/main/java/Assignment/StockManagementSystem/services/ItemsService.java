@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public interface ItemsService {
@@ -20,5 +21,7 @@ public interface ItemsService {
     public Page<ItemsDTOWithoutInventories> getItems(String itemCode, LocalDateTime startDateTime, LocalDateTime endDateTime, String status, Pageable pageable);
 
     public Items updateItem(String itemCode, ItemDTOUpdate updatedItem);
+
+    List<Items> getItemsByInventory(Inventories existingInventory, int bulkQuantity);
 
 }
