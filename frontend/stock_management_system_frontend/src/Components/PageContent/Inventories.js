@@ -44,15 +44,15 @@ const Inventories = () => {
 
   useEffect(() => {
     getInventories();
-  }, [searchTerm]);
+  }, [searchTerm, pagination.page]);
 
   const getInventories = async () => {
     try {
       const response = await fetchInventories({
         searchTerm,
         pagination: {
-          ...pagination,
           page: pagination.page - 1,
+          size: pagination.size,
         },
       });
 
@@ -65,6 +65,11 @@ const Inventories = () => {
       }));
 
       setInventories(transformedData);
+      setPagination({
+        page: response.data.pageable.pageNumber + 1,
+        size: response.data.pageable.pageSize,
+        total: response.data.totalElements,
+      });
     } catch (error) {
       message.error("Failed to fetch inventories.");
     }
@@ -93,6 +98,14 @@ const Inventories = () => {
   const handleSearch = (value) => {
     setsearchTerm(value);
     getInventories();
+  };
+
+  const handlePaginationChange = (page, pageSize) => {
+    setPagination({
+      page,
+      size: pageSize,
+      total: pagination.total,
+    });
   };
 
   const columns = [
@@ -248,10 +261,15 @@ const Inventories = () => {
         />
 
         <Table
-          dataSource={inventories}
           columns={columns}
-          rowKey={(record, index) => index}
-          pagination={{ pageSize: 10 }}
+          dataSource={inventories}
+          rowKey="inventoryId"
+          pagination={{
+            current: pagination.page,
+            pageSize: pagination.size,
+            total: pagination.total,
+            onChange: handlePaginationChange,
+          }}
         />
       </div>
     </div>

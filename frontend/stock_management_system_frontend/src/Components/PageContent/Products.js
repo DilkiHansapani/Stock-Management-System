@@ -290,6 +290,7 @@ const Products = () => {
           <Table
             columns={categoryColumns}
             dataSource={categories}
+            rowKey="categoryId"
             loading={loading}
             pagination={{ pageSize: 5 }}
             onChange={handleTableChange}

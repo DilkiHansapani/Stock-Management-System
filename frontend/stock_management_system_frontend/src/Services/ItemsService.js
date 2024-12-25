@@ -1,9 +1,18 @@
 import api from "../APIs/AxiosInstance";
 
-export const fetchItems = async ({ filters, pagination }) => {
+export const fetchItems = async ({
+  searchItemCode,
+  startDate,
+  endDate,
+  searchStatus,
+  pagination,
+}) => {
   const params = {
-    ...filters,
-    page: pagination?.page || 1,
+    itemCode: searchItemCode,
+    startDateTime: startDate,
+    endDateTime: endDate,
+    status: searchStatus,
+    page: pagination?.page || 0,
     size: pagination?.size || 10,
   };
 
