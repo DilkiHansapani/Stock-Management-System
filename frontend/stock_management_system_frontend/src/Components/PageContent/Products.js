@@ -8,7 +8,7 @@ import {
   addCategory,
   fetchCategories,
 } from "../../Services/ProductsService";
-import { status } from "../../Common files/Constants";
+import { CONSTANTS } from "../../Common files/Constants";
 
 const Products = () => {
   const [materials, setMaterials] = useState([]);
@@ -75,7 +75,7 @@ const Products = () => {
     setLoading(true);
     try {
       const materialResponse = await addMaterial(values);
-      if (materialResponse.status === status.HttpStatusString.CREATED) {
+      if (materialResponse.status === CONSTANTS.HttpStatusString.CREATED) {
         materialForm.resetFields();
         notification.success({ message: "Material added successfully!" });
         fetchData();
@@ -91,7 +91,7 @@ const Products = () => {
     setLoading(true);
     try {
       const categoryResponse = await addCategory(values);
-      if (categoryResponse.status === status.HttpStatusString.CREATED) {
+      if (categoryResponse.status === CONSTANTS.HttpStatusString.CREATED) {
         materialForm.resetFields();
         notification.success({ message: "Material added successfully!" });
         fetchData();
@@ -122,7 +122,7 @@ const Products = () => {
     setLoading(true);
     try {
       const response = await updateMaterial(editingMaterial.materialId, values);
-      if (response.status === status.HttpStatusString.OK) {
+      if (response.status === CONSTANTS.HttpStatusString.OK) {
         notification.success({ message: "Material updated successfully!" });
         fetchData();
         setEditingMaterial(null);

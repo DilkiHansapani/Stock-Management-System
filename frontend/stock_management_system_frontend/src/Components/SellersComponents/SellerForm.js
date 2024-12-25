@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Form, Input, Button, Radio, message } from "antd";
 import { addSeller, updateSeller } from "../../Services/SellerService";
-import { status } from "../../Common files/Constants";
+import { CONSTANTS } from "../../Common files/Constants";
 
 const SellerForm = ({
   editingSeller,
@@ -28,13 +28,13 @@ const SellerForm = ({
           updatedSeller
         );
         console.log("response of update :", response);
-        if (response.status === status.HttpStatusString.OK) {
+        if (response.status === CONSTANTS.HttpStatusString.OK) {
           message.success("Seller updated successfully!");
           onUpdateSeller(updatedSeller);
         }
       } else {
         const response = await addSeller(values);
-        if (response.status === status.HttpStatus.CREATED) {
+        if (response.status === CONSTANTS.HttpStatus.CREATED) {
           message.success("Seller added successfully!");
           onFormSubmit(response.data);
         }

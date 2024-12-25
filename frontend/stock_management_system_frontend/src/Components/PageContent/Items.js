@@ -10,7 +10,7 @@ import {
 } from "antd";
 import { fetchItems, updateItem } from "../../Services/ItemsService";
 import { formatDateRange } from "../../Utils/dateUtils";
-import { status } from "../../Common files/Constants";
+import { CONSTANTS } from "../../Common files/Constants";
 import moment from "moment";
 
 const { RangePicker } = DatePicker;
@@ -78,7 +78,7 @@ const Items = () => {
   const updateItemOnServer = async (updatedItem) => {
     try {
       const response = await updateItem(updatedItem.itemCode, updatedItem);
-      if (response.status === status.HttpStatusString.OK) {
+      if (response.status === CONSTANTS.HttpStatusString.OK) {
         setItems(response.data);
         fetchData();
         setEditingItem(null);
@@ -98,7 +98,7 @@ const Items = () => {
 
     const updatedItem = updatedItems.find((item) => item.itemCode === itemCode);
 
-    if (status === "normal") {
+    if (status === CONSTANTS.ItemStatus.NORMAL) {
       const updatedItemsWithReset = updatedItems.map((item) =>
         item.itemCode === itemCode ? { ...item, salePercentage: 0 } : item
       );
@@ -107,7 +107,7 @@ const Items = () => {
         itemCode: updatedItem.itemCode,
         sellingPrice: updatedItem.sellingPrice,
         salePercentage: 0,
-        status: "normal",
+        status: CONSTANTS.ItemStatus.NORMAL,
       });
     }
   };
@@ -121,8 +121,10 @@ const Items = () => {
     const updatedItem = updatedItems.find((item) => item.itemCode === itemCode);
 
     if (
-      (field === "salePercentage" && updatedItem.status === "sale") ||
-      (field === "sellingPrice" && updatedItem.status === "stockClearing")
+      (field === "salePercentage" &&
+        updatedItem.status === CONSTANTS.ItemStatus.SALE) ||
+      (field === "sellingPrice" &&
+        updatedItem.status === CONSTANTS.ItemStatus.STOCKCLEARING)
     ) {
       updateItemOnServer({
         itemCode: updatedItem.itemCode,
@@ -161,7 +163,8 @@ const Items = () => {
       dataIndex: "sellingPrice",
       key: "sellingPrice",
       render: (value, record) =>
-        record.status === "stockClearing" || record.status === "sale" ? (
+        record.status === CONSTANTS.ItemStatus.STOCKCLEARING ||
+        record.status === CONSTANTS.ItemStatus.SALE ? (
           editingItem &&
           editingItem.itemCode === record.itemCode &&
           editingItem.field === "sellingPrice" ? (
@@ -203,7 +206,7 @@ const Items = () => {
       dataIndex: "salePercentage",
       key: "salePercentage",
       render: (value, record) =>
-        record.status === "sale" ? (
+        record.status === CONSTANTS.ItemStatus.SALE ? (
           editingItem &&
           editingItem.itemCode === record.itemCode &&
           editingItem.field === "salePercentage" ? (
@@ -244,9 +247,13 @@ const Items = () => {
           style={{ width: 120 }}
           onChange={(value) => handleStatusChange(value, record.itemCode)}
         >
-          <Select.Option value="normal">Normal</Select.Option>
-          <Select.Option value="sale">Sale</Select.Option>
-          <Select.Option value="stockClearing">Stock Clearing</Select.Option>
+          <Select.Option value={CONSTANTS.ItemStatus.NORMAL}>
+            Normal
+          </Select.Option>
+          <Select.Option value={CONSTANTS.ItemStatus.SALE}>Sale</Select.Option>
+          <Select.Option value={CONSTANTS.ItemStatus.STOCKCLEARING}>
+            Stock Clearing
+          </Select.Option>
         </Select>
       ),
     },
@@ -270,9 +277,13 @@ const Items = () => {
           style={{ width: 200 }}
           allowClear
         >
-          <Select.Option value="normal">Normal</Select.Option>
-          <Select.Option value="sale">Sale</Select.Option>
-          <Select.Option value="stockClearing">Stock Clearing</Select.Option>
+          <Select.Option value={CONSTANTS.ItemStatus.NORMAL}>
+            Normal
+          </Select.Option>
+          <Select.Option value={CONSTANTS.ItemStatus.SALE}>Sale</Select.Option>
+          <Select.Option value={CONSTANTS.ItemStatus.STOCKCLEARING}>
+            Stock Clearing
+          </Select.Option>
         </Select>
 
         <RangePicker onChange={handleDateRangeChange} />

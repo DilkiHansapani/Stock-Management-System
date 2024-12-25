@@ -1,5 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Table, Form, Select, Input, Button, message, Card } from "antd";
+import {
+  Table,
+  Form,
+  Select,
+  Input,
+  Button,
+  message,
+  Card,
+  Modal,
+  Radio,
+} from "antd";
 import { getAllSellers } from "../../Services/SellerService";
 import {
   getAllCategories,
@@ -8,8 +18,9 @@ import {
 import {
   addInventory,
   fetchInventories,
+  updateInventory,
 } from "../../Services/InventoriesService";
-import { status } from "../../Common files/Constants";
+import { CONSTANTS } from "../../Common files/Constants";
 
 const { Option } = Select;
 
@@ -21,6 +32,11 @@ const Inventories = () => {
   const [inventories, setInventories] = useState([]);
   const [searchTerm, setsearchTerm] = useState("");
   const [pagination, setPagination] = useState({ page: 1, size: 10, total: 0 });
+  const [isBulkUpdateModalVisible, setIsBulkUpdateModalVisible] =
+    useState(false);
+  const [bulkForm] = Form.useForm();
+  const [statusSelected, setStatusSelected] = useState("");
+  const [bulkUpdateValues, setBulkUpdateValues] = useState(null);
 
   const getData = async () => {
     try {
@@ -33,7 +49,9 @@ const Inventories = () => {
       const materialResponse = await getAllMaterials();
       setMaterials(materialResponse.data.data);
     } catch (error) {
-      message.error("Failed to data for sellers,categories and materials");
+      message.error(
+        "Failed to fetch data for sellers, categories, and materials"
+      );
     }
   };
 
@@ -85,13 +103,13 @@ const Inventories = () => {
       };
 
       const response = await addInventory(updatedValues);
-      if (response.status === status.HttpStatusString.CREATED) {
+      if (response.status === CONSTANTS.HttpStatusString.CREATED) {
         message.success("Inventory added successfully!");
         form.resetFields();
         getInventories();
       }
     } catch (error) {
-      message.error({ message: "Failed to add inventory." });
+      message.error("Failed to add inventory.");
     }
   };
 
@@ -129,7 +147,58 @@ const Inventories = () => {
       dataIndex: "quantity",
       key: "quantity",
     },
+    {
+      title: "Action",
+      key: "action",
+      render: (_, record) => (
+        <Button onClick={() => showBulkUpdateModal(record)}>Bulk Update</Button>
+      ),
+    },
   ];
+
+  const showBulkUpdateModal = (record) => {
+    setBulkUpdateValues(record);
+    setIsBulkUpdateModalVisible(true);
+  };
+
+  const handleBulkUpdate = async (values) => {
+    try {
+      const bulkUpdatePayload = {
+        ...values,
+        status: statusSelected,
+        inventoryId: bulkUpdateValues.inventoryId,
+      };
+
+      if (statusSelected === CONSTANTS.ItemStatus.SALE) {
+        bulkUpdatePayload.salePercentage = values.salePercentage;
+        bulkUpdatePayload.sellingPrice = 0;
+      } else if (statusSelected === CONSTANTS.ItemStatus.STOCKCLEARING) {
+        bulkUpdatePayload.sellingPrice = values.sellingPrice;
+        bulkUpdatePayload.salePercentage = 0;
+      }
+
+      const response = await updateInventory(
+        bulkUpdatePayload.inventoryId,
+        bulkUpdatePayload
+      );
+
+      if (response.status === CONSTANTS.HttpStatusString.OK) {
+        message.success("Bulk update applied successfully!");
+        setIsBulkUpdateModalVisible(false);
+        getInventories();
+      }
+    } catch (error) {
+      message.error("Failed to apply bulk update.");
+    }
+  };
+
+  useEffect(() => {
+    console.log("bulk update valuess :", bulkUpdateValues);
+  }, [bulkUpdateValues]);
+
+  const handleStatusChange = (e) => {
+    setStatusSelected(e.target.value);
+  };
 
   return (
     <div style={{ display: "flex", gap: "20px" }}>
@@ -272,6 +341,64 @@ const Inventories = () => {
           }}
         />
       </div>
+
+      <Modal
+        title="Update Bulk"
+        open={isBulkUpdateModalVisible}
+        onCancel={() => setIsBulkUpdateModalVisible(false)}
+        footer={null}
+      >
+        <Form form={bulkForm} layout="vertical" onFinish={handleBulkUpdate}>
+          <Form.Item
+            label="Bulk Quantity"
+            name="bulkQuantity"
+            rules={[{ required: true, message: "Please enter bulk quantity" }]}
+          >
+            <Input type="number" />
+          </Form.Item>
+
+          <Form.Item
+            label="Status"
+            name="status"
+            rules={[{ required: true, message: "Please select a status" }]}
+          >
+            <Radio.Group onChange={handleStatusChange}>
+              <Radio value={CONSTANTS.ItemStatus.SALE}>Sale</Radio>
+              <Radio value={CONSTANTS.ItemStatus.STOCKCLEARING}>
+                Stock Clearing
+              </Radio>
+            </Radio.Group>
+          </Form.Item>
+
+          {statusSelected === CONSTANTS.ItemStatus.STOCKCLEARING && (
+            <Form.Item
+              label="Selling Price"
+              name="sellingPrice"
+              rules={[
+                { required: true, message: "Please enter selling price" },
+              ]}
+            >
+              <Input type="number" />
+            </Form.Item>
+          )}
+
+          {statusSelected === CONSTANTS.ItemStatus.SALE && (
+            <Form.Item
+              label="Sale Percentage"
+              name="salePercentage"
+              rules={[
+                { required: true, message: "Please enter sale percentage" },
+              ]}
+            >
+              <Input type="number" />
+            </Form.Item>
+          )}
+
+          <Button type="primary" htmlType="submit">
+            Update
+          </Button>
+        </Form>
+      </Modal>
     </div>
   );
 };

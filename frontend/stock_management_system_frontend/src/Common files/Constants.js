@@ -30,4 +30,10 @@ const HttpStatusString = {
   SERVICE_UNAVAILABLE: "SERVICE_UNAVAILABLE",
 };
 
-export const status = { HttpStatus, HttpStatusString };
+const ItemStatus = {
+  SALE: "sale",
+  STOCKCLEARING: "stockClearing",
+  NORMAL: "normal",
+};
+
+export const CONSTANTS = { HttpStatus, HttpStatusString, ItemStatus };
