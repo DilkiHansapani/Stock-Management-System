@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Repository
@@ -19,8 +20,8 @@ public interface ItemsRepository extends JpaRepository<Items,String> {
             "(:endDateTime IS NULL OR i.dateTime <= :endDateTime) AND " +
             "(:status IS NULL OR :status = '' OR i.status = :status)")
     Page<Items> findItems(@Param("itemCode") String itemCode,
-                          @Param("startDateTime") Date startDateTime,
-                          @Param("endDateTime") Date endDateTime,
+                          @Param("startDateTime") LocalDateTime startDateTime,
+                          @Param("endDateTime") LocalDateTime endDateTime,
                           @Param("status") String status,
                           Pageable pageable);
 

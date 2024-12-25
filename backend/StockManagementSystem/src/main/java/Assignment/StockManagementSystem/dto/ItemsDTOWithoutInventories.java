@@ -8,6 +8,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -15,7 +16,9 @@ public class ItemsDTOWithoutInventories {
 
     private String itemCode;
 
-    private Date dateTime;
+    private LocalDateTime dateTime;
+
+    private String categoryType;
 
     private float buyingPrice;
 
@@ -35,11 +38,11 @@ public class ItemsDTOWithoutInventories {
         this.itemCode = itemCode;
     }
 
-    public Date getDateTime() {
+    public LocalDateTime getDateTime() {
         return dateTime;
     }
 
-    public void setDateTime(Date dateTime) {
+    public void setDateTime(LocalDateTime dateTime) {
         this.dateTime = dateTime;
     }
 
@@ -81,5 +84,13 @@ public class ItemsDTOWithoutInventories {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getCategoryType() {
+        return categoryType;
+    }
+
+    public void setCategoryType(String categoryType) {
+        this.categoryType = categoryType;
     }
 }
