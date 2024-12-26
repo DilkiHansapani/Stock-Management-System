@@ -202,7 +202,7 @@ const Inventories = () => {
   };
 
   return (
-    <div style={{ display: "flex", gap: "20px" }}>
+    <div style={{ display: "flex", gap: "20px", marginTop: "50px" }}>
       <Card
         title="Add Inventory"
         style={{

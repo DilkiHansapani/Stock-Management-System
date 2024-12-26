@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Input, Button, Form, Card, Table, notification } from "antd";
+import { Input, Button, Form, Card, Table, notification, Modal } from "antd";
 import { EditOutlined } from "@ant-design/icons";
 import {
   addMaterial,
@@ -30,6 +30,8 @@ const Products = () => {
 
   const [materialForm] = Form.useForm();
   const [categoryForm] = Form.useForm();
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [modalForm] = Form.useForm();
 
   const fetchData = async () => {
     try {
@@ -115,7 +117,8 @@ const Products = () => {
 
   const handleEditMaterial = (record) => {
     setEditingMaterial(record);
-    materialForm.setFieldsValue(record);
+    modalForm.setFieldsValue(record);
+    setIsModalVisible(true);
   };
 
   const handleUpdateMaterial = async (values) => {
@@ -127,6 +130,7 @@ const Products = () => {
         fetchData();
         setEditingMaterial(null);
         materialForm.resetFields();
+        setIsModalVisible(false);
       }
     } catch (error) {
       notification.error({ message: "Failed to update material." });
@@ -177,7 +181,7 @@ const Products = () => {
 
   return (
     <div>
-      <h2 style={{ marginTop: "-5px" }}>Manage Product Component</h2>
+      <h2 style={{ marginTop: "15px" }}>Manage Product Component</h2>
       <div style={{ display: "flex", gap: "20px" }}>
         <Card
           title="Materials"
@@ -214,19 +218,8 @@ const Products = () => {
             </Form.Item>
             <Form.Item>
               <Button type="primary" htmlType="submit" loading={loading}>
-                {editingMaterial ? "Update Material" : "Add Material"}
+                Add Category
               </Button>
-              {editingMaterial && (
-                <Button
-                  style={{ marginLeft: 8 }}
-                  onClick={() => {
-                    setEditingMaterial(null);
-                    materialForm.resetFields();
-                  }}
-                >
-                  Cancel
-                </Button>
-              )}
             </Form.Item>
           </Form>
 
@@ -247,6 +240,40 @@ const Products = () => {
             pagination={{ pageSize: 5 }}
             onChange={handleTableChange}
           />
+          <Modal
+            title="Edit Material"
+            visible={isModalVisible}
+            footer={null}
+            onCancel={() => setIsModalVisible(false)}
+          >
+            <Form
+              form={modalForm}
+              onFinish={handleUpdateMaterial}
+              layout="vertical"
+            >
+              <Form.Item
+                name="materialName"
+                rules={[
+                  { required: true, message: "Please input material name!" },
+                ]}
+              >
+                <Input placeholder="Material Name" />
+              </Form.Item>
+              <Form.Item
+                name="materialType"
+                rules={[
+                  { required: true, message: "Please input material type!" },
+                ]}
+              >
+                <Input placeholder="Material Type" />
+              </Form.Item>
+              <Form.Item>
+                <Button type="primary" htmlType="submit" loading={loading}>
+                  Update Material
+                </Button>
+              </Form.Item>
+            </Form>
+          </Modal>
         </Card>
 
         <Card

@@ -7,9 +7,11 @@
   padding: 10px 20px;
 }
 
-.logo {
-  font-size: 20px;
-  font-weight: bold;
+.logo-image {
+  height: 60px;
+  width: 150px;
+  margin-left: 20px;
+  margin-top: 5px;
 }
 
 .actions > button {

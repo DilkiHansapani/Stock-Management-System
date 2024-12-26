@@ -116,7 +116,7 @@ const Sellers = () => {
 
   return (
     <div>
-      <h2 style={{ marginTop: "-5px" }}>Manage Sellers</h2>
+      <h2 style={{ marginTop: "15px" }}>Manage Sellers</h2>
       <div
         style={{
           display: "flex",
