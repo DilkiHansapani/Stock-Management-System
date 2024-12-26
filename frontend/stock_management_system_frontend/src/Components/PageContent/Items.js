@@ -7,10 +7,14 @@ import {
   Space,
   message,
   InputNumber,
+  Modal,
+  Button,
 } from "antd";
+import { FileTextOutlined } from "@ant-design/icons";
 import { fetchItems, updateItem } from "../../Services/ItemsService";
 import { formatDateRange } from "../../Utils/dateUtils";
 import { CONSTANTS } from "../../Common files/Constants";
+import Reports from "./Reports";
 import moment from "moment";
 
 const { RangePicker } = DatePicker;
@@ -23,6 +27,7 @@ const Items = () => {
   const [endDate, setEndDate] = useState();
   const [pagination, setPagination] = useState({ page: 1, size: 10, total: 0 });
   const [editingItem, setEditingItem] = useState(null);
+  const [showReportModal, setShowReportModal] = useState(false);
 
   const fetchData = async () => {
     try {
@@ -62,7 +67,6 @@ const Items = () => {
 
   const handleDateRangeChange = (dates) => {
     const { formattedStart, formattedEnd } = formatDateRange(dates);
-    console.log("formatedStart :", formattedStart);
     setStartDate(formattedStart);
     setEndDate(formattedEnd);
   };
@@ -83,7 +87,6 @@ const Items = () => {
         fetchData();
         setEditingItem(null);
       }
-      console.log("response :", response);
       message.success(`Item ${updatedItem.itemCode} updated successfully.`);
     } catch (error) {
       message.error(`Failed to update item ${updatedItem.itemCode}.`);
@@ -287,7 +290,23 @@ const Items = () => {
         </Select>
 
         <RangePicker onChange={handleDateRangeChange} />
+        <Button
+          type="primary"
+          style={{ marginLeft: "250px" }}
+          onClick={() => setShowReportModal(true)}
+          icon={<FileTextOutlined />}
+        >
+          Generate Reports
+        </Button>
       </Space>
+      <Modal
+        open={showReportModal}
+        onCancel={() => setShowReportModal(false)}
+        footer={null}
+        width={1200}
+      >
+        <Reports />
+      </Modal>
 
       <Table
         columns={columns}

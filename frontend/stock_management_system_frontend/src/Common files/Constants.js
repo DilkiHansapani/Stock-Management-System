@@ -36,4 +36,15 @@ const ItemStatus = {
   NORMAL: "normal",
 };
 
-export const CONSTANTS = { HttpStatus, HttpStatusString, ItemStatus };
+const ReportDropdownValues = {
+  SELLERS: "sellers",
+  DATERANGE: "dateRange",
+  STATUS: "status",
+};
+
+export const CONSTANTS = {
+  HttpStatus,
+  HttpStatusString,
+  ItemStatus,
+  ReportDropdownValues,
+};
