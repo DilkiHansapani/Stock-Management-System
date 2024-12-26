@@ -18,7 +18,7 @@ public interface CategoriesService {
 
     public Categories getCategoryById(int categoryId);
 
-    public Categories updateCategory(int categoryId, CategoryDTOWithoutId updatedCategory);
+//    public Categories updateCategory(int categoryId, CategoryDTOWithoutId updatedCategory);
 
     public List<Categories> getAllCategories();
 }

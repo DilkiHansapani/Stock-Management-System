@@ -57,20 +57,4 @@ public class CategoriesController extends AbstractController {
         }
     }
 
-    @PutMapping("/{categoryId}")
-    public ResponseEntity<ResponseObject> updateCategory(
-            @PathVariable int categoryId,
-            @RequestBody CategoryDTOWithoutId updatedCategory
-    ) {
-        try {
-            Categories result = categoriesService.updateCategory(categoryId, updatedCategory);
-            return sendSuccessResponse(result,HttpStatus.OK);
-        } catch (BadRequestException ex) {
-            return sendErrorResponse(ex.getMessage(), HttpStatus.BAD_REQUEST);
-        } catch (ResourceNotFoundException ex) {
-            return sendErrorResponse(ex.getMessage(), HttpStatus.NOT_FOUND);
-        } catch (InternalServerErrorException ex) {
-            return sendErrorResponse(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
 }

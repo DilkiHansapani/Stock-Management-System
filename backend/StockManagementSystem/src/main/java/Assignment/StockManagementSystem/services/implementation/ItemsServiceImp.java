@@ -33,13 +33,9 @@ public class ItemsServiceImp implements ItemsService {
 
     private static final Logger logger = LogManager.getLogger(ItemsServiceImp.class);
 
-    private final ModelMapper modelMapper = new ModelMapper();
-
     @Autowired
     private ItemsRepository itemsRepository;
 
-    @Autowired
-    private InventoriesRepository inventoriesRepository;
 
     @Override
     public void addItems(Inventories inventory, InventoryDTOWithoutId inventoryRequestDTO) {

@@ -89,26 +89,26 @@ public class CategoriesServiceImp implements CategoriesService {
 
     }
 
-    @Override
-    public Categories updateCategory(int categoryId, CategoryDTOWithoutId updatedCategory) {
-        try {
-            if (categoryId <= 0) {
-                throw new BadRequestException("Category ID must be a valid number.");
-            }
-
-            Categories existingCategory = categoriesRepository.findById(categoryId)
-                    .orElseThrow(() -> new ResourceNotFoundException("Category with ID " + categoryId + " not found."));
-
-            modelMapper.map(updatedCategory, existingCategory);
-
-            return categoriesRepository.save(existingCategory);
-        } catch (ResourceNotFoundException | BadRequestException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            logger.error("Error occurred while updating category with ID " + categoryId, ex);
-            throw new InternalServerErrorException("An error occurred while updating the category. Please try again.");
-        }
-    }
+//    @Override
+//    public Categories updateCategory(int categoryId, CategoryDTOWithoutId updatedCategory) {
+//        try {
+//            if (categoryId <= 0) {
+//                throw new BadRequestException("Category ID must be a valid number.");
+//            }
+//
+//            Categories existingCategory = categoriesRepository.findById(categoryId)
+//                    .orElseThrow(() -> new ResourceNotFoundException("Category with ID " + categoryId + " not found."));
+//
+//            modelMapper.map(updatedCategory, existingCategory);
+//
+//            return categoriesRepository.save(existingCategory);
+//        } catch (ResourceNotFoundException | BadRequestException ex) {
+//            throw ex;
+//        } catch (Exception ex) {
+//            logger.error("Error occurred while updating category with ID " + categoryId, ex);
+//            throw new InternalServerErrorException("An error occurred while updating the category. Please try again.");
+//        }
+//    }
 
     private CategoriesDTOWithoutInventories convertToCategoryDTO(Categories category) {
         CategoriesDTOWithoutInventories dto = new CategoriesDTOWithoutInventories();

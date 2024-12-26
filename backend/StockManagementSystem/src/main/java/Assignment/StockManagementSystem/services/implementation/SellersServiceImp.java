@@ -80,7 +80,6 @@ public class SellersServiceImp implements SellersService {
     }
 
 
-
     @Override
     public Sellers getSellerById(int sellerId) {
         try{
