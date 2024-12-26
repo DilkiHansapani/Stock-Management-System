@@ -148,6 +148,7 @@ public class InventoriesServiceImp implements InventoriesService {
                         status
                 );
                 item.setSellingPrice(sellingPrice);
+                item.setSalePercentage(salePercentage);
                 item.setStatus(status);
             }
         } catch (Exception ex) {

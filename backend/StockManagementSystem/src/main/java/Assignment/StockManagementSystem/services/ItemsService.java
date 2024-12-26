@@ -3,6 +3,7 @@ package Assignment.StockManagementSystem.services;
 import Assignment.StockManagementSystem.dto.InventoryDTOWithoutId;
 import Assignment.StockManagementSystem.dto.ItemDTOUpdate;
 import Assignment.StockManagementSystem.dto.ItemsDTOWithoutInventories;
+import Assignment.StockManagementSystem.dto.SoldoutItemCountDTO;
 import Assignment.StockManagementSystem.models.Inventories;
 import Assignment.StockManagementSystem.models.Items;
 import org.springframework.data.domain.Page;
@@ -22,6 +23,11 @@ public interface ItemsService {
 
     public Items updateItem(String itemCode, ItemDTOUpdate updatedItem);
 
-    List<Items> getItemsByInventory(Inventories existingInventory, int bulkQuantity);
+    public List<Items> getItemsByInventory(Inventories existingInventory, int bulkQuantity);
 
+    public List<SoldoutItemCountDTO> getSoldItemsBySeller();
+
+    public List<Items> getSoldItemsByDateRange(LocalDateTime startDateTimeParsed, LocalDateTime endDateTimeParsed);
+
+    public List<Items> getItemsByStatus(String status);
 }

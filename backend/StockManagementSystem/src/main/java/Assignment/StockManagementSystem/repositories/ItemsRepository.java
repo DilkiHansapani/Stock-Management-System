@@ -31,5 +31,23 @@ public interface ItemsRepository extends JpaRepository<Items,String> {
     @Query("SELECT i FROM Items i WHERE i.inventory = :inventory ORDER BY i.dateTime ASC LIMIT :bulkQuantity")
     List<Items> findFirstNByInventoryOrderByDateTimeAsc(@Param("inventory") Inventories inventory, @Param("bulkQuantity") int bulkQuantity);
 
+    @Query("SELECT i.inventory.seller, COUNT(i) " +
+            "FROM Items i " +
+            "WHERE i.status = 'soldout' " +
+            "GROUP BY i.inventory.seller "+
+            "ORDER BY COUNT(i) DESC")
+    List<Object[]> countSoldOutItemsBySeller();
+
+    @Query("SELECT i FROM Items i WHERE i.status = :status")
+    List<Items> findItemsByStatus(@Param("status") String status);
+
+    @Query("SELECT i FROM Items i WHERE " +
+            "(:startDateTime IS NULL OR i.dateTime >= :startDateTime) AND " +
+            "(:endDateTime IS NULL OR i.dateTime <= :endDateTime) AND " +
+            "(i.status = 'soldout')")
+    List<Items> findSoldoutItemDateRange(
+                          @Param("startDateTime") LocalDateTime startDateTime,
+                          @Param("endDateTime") LocalDateTime endDateTime);
+
 
 }

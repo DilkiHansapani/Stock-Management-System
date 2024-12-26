@@ -4,8 +4,10 @@ import Assignment.StockManagementSystem.common.ErrorMessages;
 import Assignment.StockManagementSystem.dto.InventoryDTOWithoutId;
 import Assignment.StockManagementSystem.dto.ItemDTOUpdate;
 import Assignment.StockManagementSystem.dto.ItemsDTOWithoutInventories;
+import Assignment.StockManagementSystem.dto.SoldoutItemCountDTO;
 import Assignment.StockManagementSystem.models.Inventories;
 import Assignment.StockManagementSystem.models.Items;
+import Assignment.StockManagementSystem.models.Sellers;
 import Assignment.StockManagementSystem.repositories.InventoriesRepository;
 import Assignment.StockManagementSystem.repositories.ItemsRepository;
 import Assignment.StockManagementSystem.services.ItemsService;
@@ -22,6 +24,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -117,6 +120,40 @@ public class ItemsServiceImp implements ItemsService {
             logger.error("Error occurred while updating item with code " + itemCode, ex);
             throw new InternalServerErrorException(ErrorMessages.ERR_MSG_INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @Override
+    public List<SoldoutItemCountDTO> getSoldItemsBySeller() {
+
+        List<Object[]> results = itemsRepository.countSoldOutItemsBySeller();
+
+        List<SoldoutItemCountDTO> soldoutItemCountDTOList = new ArrayList<>();
+
+        for (Object[] result : results) {
+            Sellers seller = (Sellers) result[0];
+            Long count = (Long) result[1];
+
+            SoldoutItemCountDTO dto = new SoldoutItemCountDTO();
+            dto.setSellerName(seller.getSellerName());
+            dto.setCount(count);
+
+            soldoutItemCountDTOList.add(dto);
+        }
+
+        return soldoutItemCountDTOList;
+    }
+
+
+    @Override
+    public List<Items> getSoldItemsByDateRange(LocalDateTime startDateTimeParsed, LocalDateTime endDateTimeParsed) {
+        List<Items> items =  itemsRepository.findSoldoutItemDateRange(startDateTimeParsed,endDateTimeParsed);
+        return items;
+    }
+
+    @Override
+    public List<Items> getItemsByStatus(String status) {
+        List<Items> items = itemsRepository.findItemsByStatus(status);
+        return items;
     }
 
     private ItemsDTOWithoutInventories convertToItemsDTO(Items item) {
