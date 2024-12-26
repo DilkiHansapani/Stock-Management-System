@@ -12,7 +12,7 @@ public class ItemsUtil {
     public static float calculateSellingPrice(float buyingPrice, float profitPercentage, float salePercentage,
                                               float existingSellingPrice, String status) {
         float sellingPrice;
-        switch (status.toLowerCase()) {
+        switch (status.trim().toLowerCase()) {
             case "sale":
                 sellingPrice = buyingPrice * (1 + profitPercentage / 100 - salePercentage / 100);
                 if (sellingPrice < buyingPrice) {
@@ -22,7 +22,7 @@ public class ItemsUtil {
             case "normal":
                 sellingPrice = buyingPrice * (1 + profitPercentage / 100);
                 break;
-            case "stockClearing":
+            case "stockclearing":
                 sellingPrice = existingSellingPrice;
                 break;
             default:

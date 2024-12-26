@@ -27,6 +27,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class ItemsServiceImp implements ItemsService {
@@ -106,6 +107,10 @@ public class ItemsServiceImp implements ItemsService {
                     updatedItem.getSellingPrice(),
                     existingItem.getStatus()
             );
+
+            if(Objects.equals(updatedItem.getStatus(), "stockClearing")){
+                existingItem.setSalePercentage(0);
+            }
 
             existingItem.setSellingPrice(sellingPrice);
 
