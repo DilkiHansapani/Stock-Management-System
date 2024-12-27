@@ -78,7 +78,9 @@ const Sellers = () => {
       dataIndex: "status",
       key: "status",
       render: (status) => (
-        <Tag color={status === "Active" ? "blue" : "red"}>{status}</Tag>
+        <Tag color={status === "Active" ? "blue" : "red"}>
+          {status === "InActive" ? "Inactive" : status}
+        </Tag>
       ),
     },
     {

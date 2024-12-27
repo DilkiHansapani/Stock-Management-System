@@ -96,7 +96,7 @@ const SellerForm = ({
       >
         <Radio.Group>
           <Radio value="Active">Active</Radio>
-          <Radio value="InActive">InActive</Radio>
+          <Radio value="InActive">Inactive</Radio>
         </Radio.Group>
       </Form.Item>
       <Form.Item>

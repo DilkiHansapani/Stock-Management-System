@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Select, DatePicker, Button, Table, Card, Row, Col, Radio } from "antd";
-import {
-  sellerDemand,
-  findItemsByDateRange,
-  findItemsByStatus,
-} from "../../Services/ItemsService";
+// import {
+//   sellerDemand,
+//   findItemsByDateRange,
+//   findItemsByStatus,
+//   generateReport
+// } from "../../Services/ItemsService";
+import { generateReports } from "../../Services/ReportService";
 import { formatDateRange } from "../../Utils/dateUtils";
 import { CONSTANTS } from "../../Common files/Constants";
 import { generatePdfReport } from "../Common/PdfReportGenerator";
@@ -69,7 +71,12 @@ const Reports = () => {
       let columns = [];
 
       if (type === CONSTANTS.ReportDropdownValues.SELLERS) {
-        result = await sellerDemand();
+        result = await generateReports(
+          CONSTANTS.ReportDropdownValues.SELLERS,
+          null,
+          null,
+          null
+        );
         formattedData = result.data.map((item, index) => ({
           key: index,
           sellerName: item.sellerName,
@@ -84,7 +91,12 @@ const Reports = () => {
         startDate &&
         endDate
       ) {
-        result = await findItemsByDateRange(startDate, endDate);
+        result = await generateReports(
+          CONSTANTS.ReportDropdownValues.DATERANGE,
+          startDate,
+          endDate,
+          null
+        );
         formattedData = result.data.map((item, index) => ({
           key: index,
           itemCode: item.itemCode,
@@ -115,7 +127,12 @@ const Reports = () => {
           },
         ];
       } else if (type === CONSTANTS.ReportDropdownValues.STATUS && status) {
-        result = await findItemsByStatus(status);
+        result = await generateReports(
+          CONSTANTS.ReportDropdownValues.STATUS,
+          null,
+          null,
+          status
+        );
         formattedData = result.data.map((item, index) => ({
           key: index,
           itemCode: item.itemCode,
@@ -177,13 +194,6 @@ const Reports = () => {
 
   const generateReport = (format) => {
     if (format === "PDF") {
-      const reportData = {
-        reportType,
-        startDate,
-        endDate,
-        status,
-        data: tableData,
-      };
       generatePdfReport(reportType, tableData, columns);
     } else if (format === "Excel") {
       generateExcelReport(reportType, tableData, columns);
