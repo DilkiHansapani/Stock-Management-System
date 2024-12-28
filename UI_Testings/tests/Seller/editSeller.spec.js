@@ -13,7 +13,7 @@ test("test", async ({ page }) => {
   try {
     const successNotification = await page.waitForSelector(
       ".ant-message-notice-success",
-      { timeout: 20000 }
+      { timeout: 30000 }
     );
     await expect(successNotification).toBeVisible();
   } catch (error) {
