@@ -1,0 +1,950 @@
+{
+	"info": {
+		"_postman_id": "46309212-2765-441b-8414-62e56dc974b5",
+		"name": "Stock Management System API Collection",
+		"description": "API collection for managing sellers and materials in the stock management system.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "32322950",
+		"_collection_link": "https://abcd99-3754.postman.co/workspace/abcd-Workspace~ac0f846f-20d1-479e-9572-b7e643729ba4/collection/32322950-46309212-2765-441b-8414-62e56dc974b5?action=share&source=collection_link&creator=32322950"
+	},
+	"item": [
+		{
+			"name": "Sellers",
+			"item": [
+				{
+					"name": "Add Seller",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"sellerName\": \"Seller H\",\n    \"email\": \"sellerH@example.com\",\n    \"contact\": \"0788412854\",\n    \"address\": \"51,James Street,Galle\",\n    \"status\": \"Active\"\n\n}"
+						},
+						"url": "http://localhost:8080/api/v1/sellers"
+					},
+					"response": [
+						{
+							"name": "Untitled Example",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"sellerName\": \"Seller H\",\n    \"email\": \"sellerH@example.com\",\n    \"contact\": \"0788412854\",\n    \"address\": \"51,James Street,Galle\",\n    \"status\": \"Active\"\n\n}"
+								},
+								"url": "http://localhost:8080/api/v1/sellers"
+							},
+							"_postman_previewlanguage": "Text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"data\": {\n    \"sellerId\": \"S001\",\n    \"sellerName\": \"Seller A\",\n    \"email\": \"seller@example.com\",\n    \"contact\": \"1234567890\",\n    \"address\": \"123 Street, City\",\n    \"status\": \"Active\"\n  },\n  \"status\": \"CREATED\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Get Sellers",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/sellers?sellerId=S001&sellerName=Seller A&email=seller@example.com&page=0&size=10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"sellers"
+							],
+							"query": [
+								{
+									"key": "sellerId",
+									"value": "S001"
+								},
+								{
+									"key": "sellerName",
+									"value": "Seller A"
+								},
+								{
+									"key": "email",
+									"value": "seller@example.com"
+								},
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Untitled Example",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/sellers?sellerId=S001&sellerName=Seller A&email=seller@example.com&page=0&size=10",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"sellers"
+									],
+									"query": [
+										{
+											"key": "sellerId",
+											"value": "S001"
+										},
+										{
+											"key": "sellerName",
+											"value": "Seller A"
+										},
+										{
+											"key": "email",
+											"value": "seller@example.com"
+										},
+										{
+											"key": "page",
+											"value": "0"
+										},
+										{
+											"key": "size",
+											"value": "10"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": "Text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"data\": [\n    {\n      \"sellerId\": \"S001\",\n      \"sellerName\": \"Seller A\",\n      \"email\": \"seller@example.com\",\n      \"contact\": \"1234567890\",\n      \"address\": \"123 Street, City\",\n      \"status\": \"Active\"\n    }\n  ],\n  \"status\": \"OK\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Update Seller",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"sellerName\": \"Updated Seller A\",\n    \"email\": \"updatedseller@example.com\",\n    \"contact\": \"0987654321\",\n    \"address\": \"456 New Street, New City\",\n    \"status\": \"Inactive\"\n}"
+						},
+						"url": "http://localhost:8080/api/v1/sellers/S001"
+					},
+					"response": [
+						{
+							"name": "Untitled Example",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"sellerName\": \"Updated Seller A\",\n    \"email\": \"updatedseller@example.com\",\n    \"contact\": \"0987654321\",\n    \"address\": \"456 New Street, New City\",\n    \"status\": \"Inactive\"\n}"
+								},
+								"url": "http://localhost:8080/api/v1/sellers/S001"
+							},
+							"_postman_previewlanguage": "Text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"data\": {\n    \"sellerId\": \"S001\",\n    \"sellerName\": \"Updated Seller A\",\n    \"email\": \"updatedseller@example.com\",\n    \"contact\": \"0987654321\",\n    \"address\": \"456 New Street, New City\",\n    \"status\": \"Inactive\"\n  },\n  \"status\": \"OK\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Get All Sellers",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Materials",
+			"item": [
+				{
+					"name": "Add Material",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"materialId\": \"M001\",\n    \"materialName\": \"Material A\",\n    \"materialType\": \"Type 1\"\n}"
+						},
+						"url": "http://localhost:8080/api/v1/materials"
+					},
+					"response": [
+						{
+							"name": "Untitled Example",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"materialId\": \"M001\",\n    \"materialName\": \"Material A\",\n    \"materialType\": \"Type 1\"\n}"
+								},
+								"url": "http://localhost:8080/api/v1/materials"
+							},
+							"_postman_previewlanguage": "Text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"data\": {\n    \"materialId\": \"M001\",\n    \"materialName\": \"Material A\",\n    \"materialType\": \"Type 1\"\n  },\n  \"status\": \"CREATED\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Get Materials",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/materials?materialId=M001&materialName=Material A&materialType=Type 1&page=0&size=10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"materials"
+							],
+							"query": [
+								{
+									"key": "materialId",
+									"value": "M001"
+								},
+								{
+									"key": "materialName",
+									"value": "Material A"
+								},
+								{
+									"key": "materialType",
+									"value": "Type 1"
+								},
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Untitled Example",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/materials?materialId=M001&materialName=Material A&materialType=Type 1&page=0&size=10",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"materials"
+									],
+									"query": [
+										{
+											"key": "materialId",
+											"value": "M001"
+										},
+										{
+											"key": "materialName",
+											"value": "Material A"
+										},
+										{
+											"key": "materialType",
+											"value": "Type 1"
+										},
+										{
+											"key": "page",
+											"value": "0"
+										},
+										{
+											"key": "size",
+											"value": "10"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": "Text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"data\": [\n    {\n      \"materialId\": \"M001\",\n      \"materialName\": \"Material A\",\n      \"materialType\": \"Type 1\"\n    }\n  ],\n  \"status\": \"OK\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Update Material",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"materialName\": \"Updated Material A\",\n    \"materialType\": \"Updated Type 1\"\n}"
+						},
+						"url": "http://localhost:8080/api/v1/materials/M001"
+					},
+					"response": [
+						{
+							"name": "Untitled Example",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"materialName\": \"Updated Material A\",\n    \"materialType\": \"Updated Type 1\"\n}"
+								},
+								"url": "http://localhost:8080/api/v1/materials/M001"
+							},
+							"_postman_previewlanguage": "Text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"data\": {\n    \"materialId\": \"M001\",\n    \"materialName\": \"Updated Material A\",\n    \"materialType\": \"Updated Type 1\"\n  },\n  \"status\": \"OK\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Categories",
+			"item": [
+				{
+					"name": "Add Category",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"categoryId\": \"C001\",\n    \"categoryType\": \"Type A\"\n}"
+						},
+						"url": "http://localhost:8080/api/v1/categories"
+					},
+					"response": [
+						{
+							"name": "Untitled Example",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"categoryId\": \"C001\",\n    \"categoryType\": \"Type A\"\n}"
+								},
+								"url": "http://localhost:8080/api/v1/categories"
+							},
+							"_postman_previewlanguage": "Text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"data\": {\n    \"categoryId\": \"C001\",\n    \"categoryType\": \"Type A\"\n  },\n  \"status\": \"CREATED\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Get Categories",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/categories?categoryId=C001&categoryType=Type A&page=0&size=10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"categories"
+							],
+							"query": [
+								{
+									"key": "categoryId",
+									"value": "C001"
+								},
+								{
+									"key": "categoryType",
+									"value": "Type A"
+								},
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Untitled Example",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/categories?categoryId=C001&categoryType=Type A&page=0&size=10",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"categories"
+									],
+									"query": [
+										{
+											"key": "categoryId",
+											"value": "C001"
+										},
+										{
+											"key": "categoryType",
+											"value": "Type A"
+										},
+										{
+											"key": "page",
+											"value": "0"
+										},
+										{
+											"key": "size",
+											"value": "10"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": "Text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"data\": [\n    {\n      \"categoryId\": \"C001\",\n      \"categoryType\": \"Type A\"\n    }\n  ],\n  \"status\": \"OK\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Update Category",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"categoryType\": \"Updated Type A\"\n}"
+						},
+						"url": "http://localhost:8080/api/v1/categories/C001"
+					},
+					"response": [
+						{
+							"name": "Untitled Example",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"categoryType\": \"Updated Type A\"\n}"
+								},
+								"url": "http://localhost:8080/api/v1/categories/C001"
+							},
+							"_postman_previewlanguage": "Text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"data\": {\n    \"categoryId\": \"C001\",\n    \"categoryType\": \"Updated Type A\"\n  },\n  \"status\": \"OK\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Inventories",
+			"item": [
+				{
+					"name": "Add Inventory",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"inventoryId\": \"INV001\",\n  \"seller\": {\n    \"sellerId\": \"S001\"\n  },\n  \"material\": {\n    \"materialId\": \"M001\"\n  },\n  \"category\": {\n    \"categoryId\": \"C001\"\n  },\n  \"quantity\": 100\n}"
+						},
+						"url": "http://localhost:8080/api/v1/inventories"
+					},
+					"response": [
+						{
+							"name": "Untitled Example",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"inventoryId\": \"INV001\",\n  \"seller\": {\n    \"sellerId\": \"S001\"\n  },\n  \"material\": {\n    \"materialId\": \"M001\"\n  },\n  \"category\": {\n    \"categoryId\": \"C001\"\n  },\n  \"quantity\": 100\n}"
+								},
+								"url": "http://localhost:8080/api/v1/inventories"
+							},
+							"_postman_previewlanguage": "Text",
+							"header": null,
+							"cookie": [],
+							"body": "{\n  \"status\": \"Created\",\n  \"message\": \"Inventory added successfully\",\n  \"data\": {\n    \"inventoryId\": \"INV001\",\n    \"seller\": {\n      \"sellerId\": \"S001\",\n      \"sellerName\": \"ABC Seller\"\n    },\n    \"material\": {\n      \"materialId\": \"M001\",\n      \"materialName\": \"Material A\"\n    },\n    \"category\": {\n      \"categoryId\": \"C001\",\n      \"categoryType\": \"Type A\"\n    },\n    \"quantity\": 100\n  }\n}"
+						}
+					]
+				},
+				{
+					"name": "Get Inventories",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/inventories?materialName=Material A&sellerName=ABC Seller&categoryType=Type A&page=0&size=10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"inventories"
+							],
+							"query": [
+								{
+									"key": "materialName",
+									"value": "Material A"
+								},
+								{
+									"key": "sellerName",
+									"value": "ABC Seller"
+								},
+								{
+									"key": "categoryType",
+									"value": "Type A"
+								},
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Untitled Example",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/inventories?materialName=Material A&sellerName=ABC Seller&categoryType=Type A&page=0&size=10",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"inventories"
+									],
+									"query": [
+										{
+											"key": "materialName",
+											"value": "Material A"
+										},
+										{
+											"key": "sellerName",
+											"value": "ABC Seller"
+										},
+										{
+											"key": "categoryType",
+											"value": "Type A"
+										},
+										{
+											"key": "page",
+											"value": "0"
+										},
+										{
+											"key": "size",
+											"value": "10"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": "Text",
+							"header": null,
+							"cookie": [],
+							"body": "{\n  \"data\": [\n    {\n      \"inventoryId\": \"INV001\",\n      \"seller\": {\n        \"sellerId\": \"S001\",\n        \"sellerName\": \"ABC Seller\"\n      },\n      \"material\": {\n        \"materialId\": \"M001\",\n        \"materialName\": \"Material A\"\n      },\n      \"category\": {\n        \"categoryId\": \"C001\",\n        \"categoryType\": \"Type A\"\n      },\n      \"quantity\": 100\n    }\n  ],\n  \"status\": \"OK\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Update Inventory",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"inventoryId\": \"INV001\",\n  \"seller\": {\n    \"sellerId\": \"S001\"\n  },\n  \"material\": {\n    \"materialId\": \"M001\"\n  },\n  \"category\": {\n    \"categoryId\": \"C001\"\n  },\n  \"quantity\": 150\n}"
+						},
+						"url": "http://localhost:8080/api/v1/inventories/INV001"
+					},
+					"response": [
+						{
+							"name": "Untitled Example",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"inventoryId\": \"INV001\",\n  \"seller\": {\n    \"sellerId\": \"S001\"\n  },\n  \"material\": {\n    \"materialId\": \"M001\"\n  },\n  \"category\": {\n    \"categoryId\": \"C001\"\n  },\n  \"quantity\": 150\n}"
+								},
+								"url": "http://localhost:8080/api/v1/inventories/INV001"
+							},
+							"_postman_previewlanguage": "Text",
+							"header": null,
+							"cookie": [],
+							"body": "{\n  \"status\": \"OK\",\n  \"message\": \"Inventory updated successfully\",\n  \"data\": {\n    \"inventoryId\": \"INV001\",\n    \"seller\": {\n      \"sellerId\": \"S001\",\n      \"sellerName\": \"ABC Seller\"\n    },\n    \"material\": {\n      \"materialId\": \"M001\",\n      \"materialName\": \"Material A\"\n    },\n    \"category\": {\n      \"categoryId\": \"C001\",\n      \"categoryType\": \"Type A\"\n    },\n    \"quantity\": 150\n  }\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Items",
+			"item": [
+				{
+					"name": "Get Items",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/items?itemCode=ITEM001&startDateTime=2024-01-01T00:00:00&endDateTime=2024-12-31T23:59:59&status=ACTIVE&page=0&size=10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"items"
+							],
+							"query": [
+								{
+									"key": "itemCode",
+									"value": "ITEM001"
+								},
+								{
+									"key": "startDateTime",
+									"value": "2024-01-01T00:00:00"
+								},
+								{
+									"key": "endDateTime",
+									"value": "2024-12-31T23:59:59"
+								},
+								{
+									"key": "status",
+									"value": "ACTIVE"
+								},
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Untitled Example",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/items?itemCode=ITEM001&startDateTime=2024-01-01T00:00:00&endDateTime=2024-12-31T23:59:59&status=ACTIVE&page=0&size=10",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"items"
+									],
+									"query": [
+										{
+											"key": "itemCode",
+											"value": "ITEM001"
+										},
+										{
+											"key": "startDateTime",
+											"value": "2024-01-01T00:00:00"
+										},
+										{
+											"key": "endDateTime",
+											"value": "2024-12-31T23:59:59"
+										},
+										{
+											"key": "status",
+											"value": "ACTIVE"
+										},
+										{
+											"key": "page",
+											"value": "0"
+										},
+										{
+											"key": "size",
+											"value": "10"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": "Text",
+							"header": null,
+							"cookie": [],
+							"body": "{\n  \"data\": [\n    {\n      \"itemCode\": \"ITEM001\",\n      \"dateTime\": \"2024-05-01T10:00:00\",\n      \"inventory\": {\n        \"inventoryId\": \"INV001\"\n      },\n      \"buyingPrice\": 50.0,\n      \"sellingPrice\": 75.0,\n      \"profitPercentage\": 50.0,\n      \"salePercentage\": 30.0,\n      \"status\": \"ACTIVE\"\n    }\n  ],\n  \"status\": \"OK\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Update Item",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"itemCode\": \"ITEM001\",\n  \"dateTime\": \"2024-05-01T10:00:00\",\n  \"inventory\": {\n    \"inventoryId\": \"INV001\"\n  },\n  \"buyingPrice\": 60.0,\n  \"sellingPrice\": 90.0,\n  \"profitPercentage\": 50.0,\n  \"salePercentage\": 35.0,\n  \"status\": \"ACTIVE\"\n}"
+						},
+						"url": "http://localhost:8080/api/v1/items/ITEM001"
+					},
+					"response": [
+						{
+							"name": "Untitled Example",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"itemCode\": \"ITEM001\",\n  \"dateTime\": \"2024-05-01T10:00:00\",\n  \"inventory\": {\n    \"inventoryId\": \"INV001\"\n  },\n  \"buyingPrice\": 60.0,\n  \"sellingPrice\": 90.0,\n  \"profitPercentage\": 50.0,\n  \"salePercentage\": 35.0,\n  \"status\": \"ACTIVE\"\n}"
+								},
+								"url": "http://localhost:8080/api/v1/items/ITEM001"
+							},
+							"_postman_previewlanguage": "Text",
+							"header": null,
+							"cookie": [],
+							"body": "{\n  \"status\": \"OK\",\n  \"message\": \"Item updated successfully\",\n  \"data\": {\n    \"itemCode\": \"ITEM001\",\n    \"dateTime\": \"2024-05-01T10:00:00\",\n    \"inventory\": {\n      \"inventoryId\": \"INV001\"\n    },\n    \"buyingPrice\": 60.0,\n    \"sellingPrice\": 90.0,\n    \"profitPercentage\": 50.0,\n    \"salePercentage\": 35.0,\n    \"status\": \"ACTIVE\"\n  }\n}"
+						}
+					]
+				}
+			]
+		}
+	]
+}
