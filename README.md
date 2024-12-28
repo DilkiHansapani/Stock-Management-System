@@ -1,12 +1,13 @@
 # Stock Management System
 
 ## Overview
-The **Stock Management System** is a comprehensive solution to manage inventory, pricing, product categories, and seller materials. This system allows businesses to add and manage products, their categories, sellers, materials, and pricing to ensure smooth and efficient inventory management.
+The **Stock Management System** is a comprehensive solution to manage inventory, pricing, product categories, materials and sellers. This system allows businesses to add and manage products, their categories, sellers, materials, and pricing to ensure smooth and efficient inventory management.
 
 The system is designed with a modular architecture, consisting of a backend, frontend, and database, all of which are containerized using Docker for easy deployment.
 
 ## Features
 - **Inventory Management**: Add, update, and remove products from your inventory.
+- **Seller Management**: Add and manage sellers who sell invenotories.
 - **Pricing Management**: Set and manage pricing for items in your inventory.
 - **Product Categories**: Organize products into various categories for easy navigation.
 - **Materials**: Add and manage materials that sellers can offer within the system.
@@ -15,17 +16,17 @@ The system is designed with a modular architecture, consisting of a backend, fro
 
 ### Backend
 - Built with **Spring Boot (Java)** to handle business logic, RESTful API for the frontend, and database interactions.
-- Manages product data, pricing, seller, materials, and inventory operations.
+- Manages items data, pricing, materials,categories and inventories operations.
 
 ### Frontend
 - Built with **React.js** to provide an interactive user interface.
 - Allows users to view products, add items, set prices, and manage categories.
 
 ### Database
-- **MySQL** is used for storing product information, categories, sellers' materials, and pricing.
+- **MySQL** is used for storing inventories, categories, sellers, materials, items, order and order items.
 
 ### Database Design
-The database structure is visualized in the Enhanced Entity-Relationship (EER) diagram below:
+The database structure is visualized in the Enhanced Entity-Relationship (EER) diagram:
 [EER Diagram](https://github.com/DilkiHansapani/Stock-Management-System/tree/master/resources/EER)
 The diagram illustrates the relationships between tables, including:
 - Product
@@ -54,7 +55,7 @@ cd stock-management-system
 To run the project locally, use the following steps:
 
 1. Navigate to your project folder:
-    Navigate to your project folder (replace `path/to/stock-management-system` with the actual path to the project directory):
+  (replace `path/to/stock-management-system` with the actual path to the project directory):
 ```bash
 cd /your/local/path/to/stock-management-system    
 ```
