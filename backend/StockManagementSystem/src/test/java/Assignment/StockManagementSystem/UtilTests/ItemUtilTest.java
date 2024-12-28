@@ -14,12 +14,13 @@ class ItemsUtilTest {
         String sellerName = "Seller1";
         String materialName = "MaterialA";
         String materialType = "TypeX";
+        int inventoryId = 1;
         int index = 5;
 
-        String result = ItemsUtil.generateItemCode(sellerName, materialName, materialType, index);
+        String result = ItemsUtil.generateItemCode(sellerName, materialName, materialType,inventoryId, index);
 
         assertNotNull(result);
-        assertEquals("Seller1-MaterialA-TypeX-5", result);
+        assertEquals("Seller1-MaterialA-TypeX-1-5", result);
     }
 
     @Test

@@ -49,6 +49,7 @@ public class ItemsServiceImp implements ItemsService {
                     inventory.getSeller().getSellerName(),
                     inventory.getMaterial().getMaterialName(),
                     inventory.getMaterial().getMaterialType(),
+                    inventory.getInventoryId(),
                     existingItemCount + i
             );
 
