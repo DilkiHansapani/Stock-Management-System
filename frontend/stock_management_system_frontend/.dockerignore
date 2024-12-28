@@ -1,0 +1,18 @@
+# Ignore node_modules (dependencies)
+
+node_modules/
+
+# Ignore build output
+
+build/
+
+# Ignore IDE-specific files
+
+\*.iml
+.idea/
+.vscode/
+
+# Ignore temporary files
+
+_.log
+_.tmp
