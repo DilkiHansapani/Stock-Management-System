@@ -1,0 +1,46 @@
+version: "3.9"
+services:
+  backend:
+    image: stock_management_system_backend:latest
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+    networks:
+      - stock_management_system-network
+    deploy:
+      replicas: 2
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: "512M"
+      restart_policy:
+        condition: on-failure
+
+  frontend:
+    image: stock_management_system_frontend:latest
+    networks:
+      - stock_management_system-network
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: "256M"
+      restart_policy:
+        condition: on-failure
+
+  database:
+    image: mysql:9.1.0
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+    networks:
+      - stock_management_system-network
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: "1G"
+
+networks:
+  stock_management_system-network:
+    driver: bridge

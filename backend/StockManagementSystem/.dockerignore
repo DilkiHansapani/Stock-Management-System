@@ -1,0 +1,16 @@
+# Ignore compiled Java files
+target/
+
+# Ignore Maven dependencies
+.mvn/
+
+# Ignore IDE-specific files
+*.iml
+.idea/
+.vscode/
+
+# Ignore temporary files
+*.log
+*.tmp
+
+
