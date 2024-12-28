@@ -94,8 +94,8 @@ const Products = () => {
     try {
       const categoryResponse = await addCategory(values);
       if (categoryResponse.status === CONSTANTS.HttpStatusString.CREATED) {
-        materialForm.resetFields();
-        notification.success({ message: "Material added successfully!" });
+        categoryForm.resetFields();
+        notification.success({ message: "Category added successfully!" });
         fetchData();
       }
     } catch (error) {
