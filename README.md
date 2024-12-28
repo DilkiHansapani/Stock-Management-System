@@ -1,7 +1,7 @@
 # Stock Management System
 
 ## Overview
-The **Stock Management System** is a comprehensive solution to manage inventory, pricing, product categories, and seller materials. This system allows businesses to add and manage products, their categories, sellers' materials, and pricing to ensure smooth and efficient inventory management.
+The **Stock Management System** is a comprehensive solution to manage inventory, pricing, product categories, and seller materials. This system allows businesses to add and manage products, their categories, sellers, materials, and pricing to ensure smooth and efficient inventory management.
 
 The system is designed with a modular architecture, consisting of a backend, frontend, and database, all of which are containerized using Docker for easy deployment.
 
@@ -9,13 +9,13 @@ The system is designed with a modular architecture, consisting of a backend, fro
 - **Inventory Management**: Add, update, and remove products from your inventory.
 - **Pricing Management**: Set and manage pricing for items in your inventory.
 - **Product Categories**: Organize products into various categories for easy navigation.
-- **Seller Materials**: Add and manage materials that sellers can offer within the system.
+- **Materials**: Add and manage materials that sellers can offer within the system.
 
 ## Architecture
 
 ### Backend
 - Built with **Spring Boot (Java)** to handle business logic, RESTful API for the frontend, and database interactions.
-- Manages product data, pricing, seller materials, and inventory operations.
+- Manages product data, pricing, seller, materials, and inventory operations.
 
 ### Frontend
 - Built with **React.js** to provide an interactive user interface.
@@ -23,6 +23,18 @@ The system is designed with a modular architecture, consisting of a backend, fro
 
 ### Database
 - **MySQL** is used for storing product information, categories, sellers' materials, and pricing.
+
+### Database Design
+The database structure is visualized in the Enhanced Entity-Relationship (EER) diagram below:
+![EER Diagram](https://github.com/DilkiHansapani/Stock-Management-System/tree/master/resources/EER)
+The diagram illustrates the relationships between tables, including:
+- Product
+- Category
+- Material
+- Inventory
+- Seller
+- Order
+- Order Item
 
 ## Getting Started
 To set up the project locally or in a production environment, follow the instructions below.
@@ -34,7 +46,7 @@ To set up the project locally or in a production environment, follow the instruc
 ### Clone the Repository
 First, clone the repository to your local machine:
 ```bash
-git clone https://github.com/your-username/stock-management-system.git
+git clone https://github.com/DilkiHansapani/Stock-Management-System.git
 cd stock-management-system
 ```
 
@@ -42,10 +54,10 @@ cd stock-management-system
 To run the project locally, use the following steps:
 
 1. Navigate to your project folder:
-    ```bash
-    cd path/to/stock-management-system
-    ```
-
+    Navigate to your project folder (replace `path/to/stock-management-system` with the actual path to the project directory):
+```bash
+cd /your/local/path/to/stock-management-system    
+```
 2. Build and start the containers using Docker Compose:
     ```bash
     docker-compose -f docker-compose.yml up --build
@@ -104,17 +116,36 @@ This file is for production deployment. It uses pre-built Docker images hosted o
 
 ## Technologies Used
 - **Backend**: Java, Spring Boot, JPA, MySQL  
-- **Frontend**: React.js, JavaScript, HTML, CSS, Ant Design  
+- **Frontend**: React.js, JavaScript, HTML, CSS  
 - **Database**: MySQL  
 - **Containerization**: Docker, Docker Compose  
+
+## Postman Collection
+
+The Postman collection for interacting with the API is available in the directory below:
+
+![Postman Collection](https://github.com/DilkiHansapani/Stock-Management-System/tree/master/resources/Postman%20Collections)
+
+The collection includes pre-configured API requests to interact with the following endpoints:
+- **Seller Management**
+- **Materials Management**
+- **Category Management**
+- **Inventory Management**
+- **Items Management**
+
+To use the Postman collection:
+- Import the collection into Postman by selecting **Import** in the Postman application and uploading the `Stock Management System API Collection.postman_collection.json` file.
+You can find the Postman collection in the `resources` directory under the project root.
+
 
 ## Future Improvements
 - Add authentication and authorization for users (e.g., using JWT).  
 - Implement advanced search and filtering capabilities for inventory management.  
 - Add an Order Management Service to handle customer orders and internal orders efficiently.  
 - Provide reporting and analytics for stock levels, pricing trends, and orders.  
-    
+
 ## Contact
 If you have any questions or suggestions, feel free to reach out to:  
 - **Name**: Dilki Hanspani  
-- **Email**: dilkihansapani321@gmail.com
+- **Email**: dilkihansapani321@gmail.com  
+
