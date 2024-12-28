@@ -9,6 +9,7 @@ import {
   InputNumber,
   Modal,
   Button,
+  notification,
 } from "antd";
 import { FileTextOutlined } from "@ant-design/icons";
 import { fetchItems, updateItem } from "../../Services/ItemsService";
@@ -94,6 +95,12 @@ const Items = () => {
   };
 
   const handleStatusChange = (status, itemCode) => {
+    if (status === CONSTANTS.ItemStatus.SALE) {
+      message.info("Add the sales percentage");
+    }
+    if (status === CONSTANTS.ItemStatus.STOCKCLEARING) {
+      message.info("Add the selling price");
+    }
     const updatedItems = items.map((item) =>
       item.itemCode === itemCode ? { ...item, status } : item
     );
