@@ -25,9 +25,4 @@ public interface ItemsService {
 
     public List<Items> getItemsByInventory(Inventories existingInventory, int bulkQuantity);
 
-    public List<SoldoutItemCountDTO> getSoldItemsBySeller();
-
-    public List<Items> getSoldItemsByDateRange(LocalDateTime startDateTimeParsed, LocalDateTime endDateTimeParsed);
-
-    public List<Items> getItemsByStatus(String status);
 }

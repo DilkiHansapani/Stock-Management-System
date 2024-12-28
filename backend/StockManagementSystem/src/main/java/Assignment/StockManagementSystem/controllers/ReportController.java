@@ -6,6 +6,8 @@ import Assignment.StockManagementSystem.exceptions.InternalServerErrorException;
 import Assignment.StockManagementSystem.exceptions.ResourceNotFoundException;
 import Assignment.StockManagementSystem.models.Items;
 import Assignment.StockManagementSystem.services.ItemsService;
+import Assignment.StockManagementSystem.services.ReportService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,11 +23,9 @@ import java.util.List;
 @RequestMapping("api/v1/reports")
 public class ReportController extends AbstractController {
 
-    private final ItemsService itemsService;
+    @Autowired
+    ReportService reportService;
 
-    public ReportController(ItemsService itemsService) {
-        this.itemsService = itemsService;
-    }
 
     @GetMapping
     public ResponseEntity<ResponseObject> getReport(
@@ -36,7 +36,7 @@ public class ReportController extends AbstractController {
         try {
             switch (reportType) {
                 case "sellers":
-                    List<SoldoutItemCountDTO> soldItemsBySeller = itemsService.getSoldItemsBySeller();
+                    List<SoldoutItemCountDTO> soldItemsBySeller = reportService.getSoldItemsBySeller();
                     return sendSuccessResponse(soldItemsBySeller, HttpStatus.OK);
 
                 case "dateRange":
@@ -45,14 +45,14 @@ public class ReportController extends AbstractController {
                     }
                     LocalDateTime startDateTimeParsed = LocalDateTime.parse(startDate, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
                     LocalDateTime endDateTimeParsed = LocalDateTime.parse(endDate, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
-                    List<Items> soldItemsByDateRange = itemsService.getSoldItemsByDateRange(startDateTimeParsed, endDateTimeParsed);
+                    List<Items> soldItemsByDateRange = reportService.getSoldItemsByDateRange(startDateTimeParsed, endDateTimeParsed);
                     return sendSuccessResponse(soldItemsByDateRange, HttpStatus.OK);
 
                 case "status":
                     if (status == null) {
                         throw new BadRequestException("Status is required for this report type.");
                     }
-                    List<Items> itemsByStatus = itemsService.getItemsByStatus(status);
+                    List<Items> itemsByStatus = reportService.getItemsByStatus(status);
                     return sendSuccessResponse(itemsByStatus, HttpStatus.OK);
 
                 default:

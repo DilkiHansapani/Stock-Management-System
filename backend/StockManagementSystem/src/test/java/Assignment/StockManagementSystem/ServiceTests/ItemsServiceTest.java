@@ -115,46 +115,4 @@ class ItemsServiceImpTest {
         assertThrows(ResourceNotFoundException.class, () -> itemsService.updateItem("itemCode", new ItemDTOUpdate()));
     }
 
-    @Test
-    void testGetSoldItemsBySeller() {
-        List<Object[]> mockResults = new ArrayList<>();
-        Sellers seller = new Sellers();
-        seller.setSellerName("Seller1");
-        mockResults.add(new Object[]{seller, 10L});
-
-        when(itemsRepository.countSoldOutItemsBySeller()).thenReturn(mockResults);
-
-        List<SoldoutItemCountDTO> result = itemsService.getSoldItemsBySeller();
-
-        assertNotNull(result);
-        assertEquals(1, result.size());
-        assertEquals("Seller1", result.get(0).getSellerName());
-        assertEquals(10, result.get(0).getCount());
-    }
-
-    @Test
-    void testGetSoldItemsByDateRange() {
-        List<Items> mockItems = new ArrayList<>();
-        mockItems.add(new Items());
-
-        when(itemsRepository.findSoldoutItemDateRange(any(), any())).thenReturn(mockItems);
-
-        List<Items> result = itemsService.getSoldItemsByDateRange(LocalDateTime.now(), LocalDateTime.now());
-
-        assertNotNull(result);
-        assertEquals(1, result.size());
-    }
-
-    @Test
-    void testGetItemsByStatus() {
-        List<Items> mockItems = new ArrayList<>();
-        mockItems.add(new Items());
-
-        when(itemsRepository.findItemsByStatus("normal")).thenReturn(mockItems);
-
-        List<Items> result = itemsService.getItemsByStatus("normal");
-
-        assertNotNull(result);
-        assertEquals(1, result.size());
-    }
 }
