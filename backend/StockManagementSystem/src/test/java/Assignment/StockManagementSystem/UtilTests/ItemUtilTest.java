@@ -1,7 +1,8 @@
-package Assignment.StockManagementSystem.utils;
+package Assignment.StockManagementSystem.UtilTests;
 
 import Assignment.StockManagementSystem.common.ErrorMessages;
 import Assignment.StockManagementSystem.exceptions.InvalidSellingPriceException;
+import Assignment.StockManagementSystem.utils.ItemsUtil;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
