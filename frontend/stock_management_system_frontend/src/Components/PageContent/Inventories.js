@@ -162,7 +162,6 @@ const Inventories = () => {
   };
 
   const handleBulkUpdate = async (values) => {
-    console.log("bulk update form values :", values);
     try {
       const bulkUpdatePayload = {
         ...values,
