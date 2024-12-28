@@ -21,7 +21,6 @@ const Sidebar = ({ onMenuSelect }) => {
       label: "Inventories",
     },
     { key: "Items", icon: <ShoppingOutlined />, label: "Items" },
-    { key: "Orders", icon: <HomeOutlined />, label: "Orders" },
   ];
 
   const handleMenuClick = (key) => {
