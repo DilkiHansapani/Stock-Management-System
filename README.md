@@ -7,11 +7,12 @@ The system is designed with a modular architecture, consisting of a **backend**,
 
 ---
 
-## Features
-- **Inventory Management:** Add, update, and remove products from your inventory.
-- **Pricing Management:** Set and manage pricing for items in your inventory.
-- **Product Categories:** Organize products into various categories for easy navigation.
-- **Seller Materials:** Add and manage materials that sellers can offer within the system.
+Features
+Inventory Management: Add, update, and remove products from your inventory.
+Pricing Management: Set and manage pricing for items in your inventory.
+Product Categories: Organize products into various categories for easy navigation.
+Seller Materials: Add and manage materials that sellers can offer within the system.
+Seller Management: Manage seller accounts, including adding, and updating sellers from the system.
 
 ---
 
