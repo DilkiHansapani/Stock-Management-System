@@ -1,9 +1,6 @@
 package Assignment.StockManagementSystem.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
@@ -12,6 +9,10 @@ public class OrderItems {
 
     @Id
     private String orderItemId;
+
+    @OneToOne
+    @JoinColumn(name = "itemCode", referencedColumnName = "itemCode", nullable = false)
+    private Items item;
 
     @ManyToOne
     @JoinColumn(name = "orderId", nullable = false)
