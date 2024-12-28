@@ -40,5 +40,5 @@ To set up the project locally or in a production environment, follow the instruc
 First, clone the repository to your local machine:
 
 ```bash
-git clone https://github.com/your-username/stock-management-system.git
+https://github.com/DilkiHansapani/Stock-Management-System.git
 cd stock-management-system
