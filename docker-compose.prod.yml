@@ -1,13 +1,16 @@
-version: "3.9"
 services:
   backend:
-    image: stock_management_system_backend:latest
+    image: ghcr.io/dilkihansapani/stock-management-system/backend:latest
+    ports:
+      - "8080:8080"
     environment:
       SPRING_PROFILES_ACTIVE: prod
+    depends_on:
+      - database
     networks:
       - stock_management_system-network
     deploy:
-      replicas: 2
+      replicas: 1
       resources:
         limits:
           cpus: "1.0"
@@ -16,7 +19,10 @@ services:
         condition: on-failure
 
   frontend:
-    image: stock_management_system_frontend:latest
+    image: ghcr.io/dilkihansapani/stock-management-system/frontend:latest
+    container_name: stock_management_system_frontend
+    ports:
+      - "3000:80"
     networks:
       - stock_management_system-network
     deploy:
@@ -29,10 +35,13 @@ services:
         condition: on-failure
 
   database:
-    image: mysql:9.1.0
+    image: ghcr.io/dilkihansapani/stock-management-system/database:latest
+    container_name: stock_management_system-db
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     networks:
       - stock_management_system-network
     deploy:
@@ -40,6 +49,8 @@ services:
         limits:
           cpus: "0.5"
           memory: "1G"
+      restart_policy:
+        condition: on-failure
 
 networks:
   stock_management_system-network:
