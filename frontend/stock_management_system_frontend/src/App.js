@@ -7,7 +7,6 @@ import Sellers from "./Components/PageContent/Sellers";
 import Products from "./Components/PageContent/Products";
 import Inventories from "./Components/PageContent/Inventories";
 import Items from "./Components/PageContent/Items";
-import Orders from "./Components/PageContent/Orders";
 import "./App.css";
 
 function App() {
@@ -23,8 +22,6 @@ function App() {
         return <Inventories />;
       case "Items":
         return <Items />;
-      case "Orders":
-        return <Orders />;
       default:
         return <h1>Welcome to Inventory Management</h1>;
     }
