@@ -26,7 +26,7 @@ The system is designed with a modular architecture, consisting of a backend, fro
 
 ### Database Design
 The database structure is visualized in the Enhanced Entity-Relationship (EER) diagram below:
-![EER Diagram](https://github.com/DilkiHansapani/Stock-Management-System/tree/master/resources/EER)
+[EER Diagram](https://github.com/DilkiHansapani/Stock-Management-System/tree/master/resources/EER)
 The diagram illustrates the relationships between tables, including:
 - Product
 - Category
@@ -116,7 +116,7 @@ This file is for production deployment. It uses pre-built Docker images hosted o
 
 ## Technologies Used
 - **Backend**: Java, Spring Boot, JPA, MySQL  
-- **Frontend**: React.js, JavaScript, HTML, CSS  
+- **Frontend**: React.js, JavaScript, HTML, CSS, Ant Design   
 - **Database**: MySQL  
 - **Containerization**: Docker, Docker Compose  
 
@@ -124,7 +124,7 @@ This file is for production deployment. It uses pre-built Docker images hosted o
 
 The Postman collection for interacting with the API is available in the directory below:
 
-![Postman Collection](https://github.com/DilkiHansapani/Stock-Management-System/tree/master/resources/Postman%20Collections)
+[Postman Collection](https://github.com/DilkiHansapani/Stock-Management-System/tree/master/resources/Postman%20Collections)
 
 The collection includes pre-configured API requests to interact with the following endpoints:
 - **Seller Management**
