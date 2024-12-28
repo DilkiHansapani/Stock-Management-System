@@ -7,6 +7,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public interface SellersService {
 
@@ -18,5 +20,5 @@ public interface SellersService {
 
     public Sellers updateSeller(int sellerId, SellerDTOWitohutId updatedSeller);
 
-
+    public List<Sellers> getAllSellers();
 }

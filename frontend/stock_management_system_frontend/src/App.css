@@ -1,0 +1,47 @@
+/* App.css */
+
+/* Wrapper for the whole page */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+/* Fixed Header */
+.fixed-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000; /* Ensure the header stays above the content */
+  background-color: white; /* Match your header's background color */
+}
+
+/* Wrapper for Sidebar and Content */
+.main-content {
+  display: flex;
+  flex: 1;
+  margin-top: 64px; /* Account for fixed header */
+}
+
+/* Fixed Sidebar */
+.fixed-sidebar {
+  position: fixed;
+  top: 64px; /* Below the fixed header */
+  left: 0;
+  bottom: 0;
+  width: 240px; /* Adjust the width of the sidebar */
+  background-color: #f0f2f5; /* Match your sidebar's background color */
+  border-right: 1px solid #e0e0e0; /* Optional: Add a border for better separation */
+  overflow-y: hidden; /* Enable scrolling for long sidebars */
+  margin-top: -15px;
+}
+
+/* Scrollable Content */
+.scrollable-content {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  margin-left: 240px; /* Match the sidebar width */
+  margin-bottom: 40px;
+}

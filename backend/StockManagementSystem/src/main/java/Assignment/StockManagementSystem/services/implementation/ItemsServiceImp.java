@@ -2,9 +2,12 @@ package Assignment.StockManagementSystem.services.implementation;
 
 import Assignment.StockManagementSystem.common.ErrorMessages;
 import Assignment.StockManagementSystem.dto.InventoryDTOWithoutId;
+import Assignment.StockManagementSystem.dto.ItemDTOUpdate;
 import Assignment.StockManagementSystem.dto.ItemsDTOWithoutInventories;
+import Assignment.StockManagementSystem.dto.SoldoutItemCountDTO;
 import Assignment.StockManagementSystem.models.Inventories;
 import Assignment.StockManagementSystem.models.Items;
+import Assignment.StockManagementSystem.models.Sellers;
 import Assignment.StockManagementSystem.repositories.InventoriesRepository;
 import Assignment.StockManagementSystem.repositories.ItemsRepository;
 import Assignment.StockManagementSystem.services.ItemsService;
@@ -20,20 +23,20 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Objects;
 
 @Service
 public class ItemsServiceImp implements ItemsService {
 
     private static final Logger logger = LogManager.getLogger(ItemsServiceImp.class);
 
-    private final ModelMapper modelMapper = new ModelMapper();
-
     @Autowired
     private ItemsRepository itemsRepository;
 
-    @Autowired
-    private InventoriesRepository inventoriesRepository;
 
     @Override
     public void addItems(Inventories inventory, InventoryDTOWithoutId inventoryRequestDTO) {
@@ -48,9 +51,9 @@ public class ItemsServiceImp implements ItemsService {
                     inventory.getMaterial().getMaterialType(),
                     existingItemCount + i
             );
-            item.setItemCode(itemCode);
 
-            item.setDateTime(new Date());
+            item.setItemCode(itemCode);
+            item.setDateTime(LocalDateTime.now());
             item.setInventory(inventory);
             item.setBuyingPrice(inventoryRequestDTO.getBuyingPrice());
             item.setProfitPercentage(inventoryRequestDTO.getProfitPercentage());
@@ -64,6 +67,7 @@ public class ItemsServiceImp implements ItemsService {
                     inventoryRequestDTO.getStockClearingPrice(),
                     inventoryRequestDTO.getStatus()
             );
+
             item.setSellingPrice(sellingPrice);
 
             itemsRepository.save(item);
@@ -71,10 +75,9 @@ public class ItemsServiceImp implements ItemsService {
     }
 
     @Override
-    public Page<ItemsDTOWithoutInventories> getItems(String itemCode, Date startDateTime, Date endDateTime, String status, Pageable pageable) {
+    public Page<ItemsDTOWithoutInventories> getItems(String itemCode, LocalDateTime startDateTime, LocalDateTime endDateTime, String status, Pageable pageable) {
         try {
             Page<Items> items = itemsRepository.findItems(itemCode, startDateTime, endDateTime, status, pageable);
-
             return items.map(this::convertToItemsDTO);
         } catch (Exception ex) {
             logger.error("Error occurred retrieving items", ex);
@@ -83,7 +86,7 @@ public class ItemsServiceImp implements ItemsService {
     }
 
     @Override
-    public Items updateItem(String itemCode, Items updatedItem) {
+    public Items updateItem(String itemCode, ItemDTOUpdate updatedItem) {
         try {
             if (itemCode == null || itemCode.isEmpty()) {
                 throw new BadRequestException("Item code must be provided.");
@@ -92,14 +95,25 @@ public class ItemsServiceImp implements ItemsService {
             Items existingItem = itemsRepository.findById(itemCode)
                     .orElseThrow(() -> new ResourceNotFoundException("Item with code " + itemCode + " not found."));
 
-            if (updatedItem.getInventory() != null) {
-                int inventoryId = updatedItem.getInventory().getInventoryId();
-                Inventories inventory = inventoriesRepository.findById(inventoryId)
-                        .orElseThrow(() -> new ResourceNotFoundException("Inventory with ID " + inventoryId + " not found."));
-                existingItem.setInventory(inventory);
+
+            existingItem.setStatus(updatedItem.getStatus());
+            existingItem.setSalePercentage(updatedItem.getSalePercentage());
+
+
+            float sellingPrice = ItemsUtil.calculateSellingPrice(
+                    existingItem.getBuyingPrice(),
+                    existingItem.getProfitPercentage(),
+                    updatedItem.getSalePercentage(),
+                    updatedItem.getSellingPrice(),
+                    existingItem.getStatus()
+            );
+
+            if(Objects.equals(updatedItem.getStatus(), "stockClearing")){
+                existingItem.setSalePercentage(0);
             }
 
-            modelMapper.map(updatedItem, existingItem);
+            existingItem.setSellingPrice(sellingPrice);
+
             return itemsRepository.save(existingItem);
         } catch (ResourceNotFoundException | BadRequestException ex) {
             throw ex;
@@ -109,15 +123,27 @@ public class ItemsServiceImp implements ItemsService {
         }
     }
 
+
+
     private ItemsDTOWithoutInventories convertToItemsDTO(Items item) {
-       ItemsDTOWithoutInventories dto = new ItemsDTOWithoutInventories();
-       dto.setItemCode(item.getItemCode());
-       dto.setDateTime(item.getDateTime());
-       dto.setBuyingPrice(item.getBuyingPrice());
-       dto.setSellingPrice(item.getSellingPrice());
-       dto.setStatus(item.getStatus());
-       dto.setProfitPercentage(item.getProfitPercentage());
-       dto.setSalePercentage(item.getSalePercentage());
+        ItemsDTOWithoutInventories dto = new ItemsDTOWithoutInventories();
+        dto.setItemCode(item.getItemCode());
+        dto.setDateTime(item.getDateTime());
+        dto.setBuyingPrice(item.getBuyingPrice());
+        dto.setSellingPrice(item.getSellingPrice());
+        dto.setProfitPercentage(item.getProfitPercentage());
+        dto.setSalePercentage(item.getSalePercentage());
+        dto.setStatus(item.getStatus());
+
+        if (item.getInventory() != null && item.getInventory().getCategory() != null) {
+            dto.setCategoryType(item.getInventory().getCategory().getCategoryType());
+        }
+
         return dto;
     }
+
+    public List<Items> getItemsByInventory(Inventories inventory, int bulkQuantity) {
+        return itemsRepository.findFirstNByInventoryOrderByDateTimeAsc(inventory, bulkQuantity);
+    }
+
 }

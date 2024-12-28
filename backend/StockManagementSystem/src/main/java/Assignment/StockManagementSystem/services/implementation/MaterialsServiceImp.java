@@ -4,6 +4,7 @@ import Assignment.StockManagementSystem.common.ErrorMessages;
 import Assignment.StockManagementSystem.dto.MaterialDTOWithoutId;
 import Assignment.StockManagementSystem.dto.MaterialsDTOWithoutInventories;
 import Assignment.StockManagementSystem.models.Materials;
+import Assignment.StockManagementSystem.models.Sellers;
 import Assignment.StockManagementSystem.repositories.MaterialsRepository;
 import Assignment.StockManagementSystem.services.MaterialsService;
 import Assignment.StockManagementSystem.exceptions.BadRequestException;
@@ -18,6 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -45,7 +47,8 @@ public class MaterialsServiceImp implements MaterialsService {
 
             Materials material = new Materials();
 
-            modelMapper.map(materialDTO, material);
+            material.setMaterialName(materialDTO.getMaterialName());
+            material.setMaterialType(materialDTO.getMaterialType());
 
             return materialsRepository.save(material);
 
@@ -60,10 +63,14 @@ public class MaterialsServiceImp implements MaterialsService {
 
 
     @Override
-    public Page<MaterialsDTOWithoutInventories> getMaterials(String materialName, String materialType, Pageable pageable) {
+    public Page<MaterialsDTOWithoutInventories> getMaterials(String searchTerm, Pageable pageable) {
         try {
-            Page<Materials> materials =  materialsRepository.findMaterials( materialName, materialType, pageable);
+            if (searchTerm == null || searchTerm.trim().isEmpty()) {
+                return materialsRepository.findMaterials(null, pageable)
+                        .map(this::convertToMaterialDTO);
+            }
 
+            Page<Materials> materials = materialsRepository.findMaterials(searchTerm, pageable);
             return materials.map(this::convertToMaterialDTO);
 
         } catch (Exception ex) {
@@ -87,6 +94,16 @@ public class MaterialsServiceImp implements MaterialsService {
     }
 
     @Override
+    public List<Materials> getAllMaterials(){
+        try{
+            return materialsRepository.findAll();
+        }catch (Exception ex) {
+            logger.error("Error occurred retrieving materials", ex);
+            throw new InternalServerErrorException(ErrorMessages.ERR_MSG_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Override
     public Materials updateMaterial(int materialId, MaterialDTOWithoutId updatedMaterial) {
         try {
             if (materialId == 0) {
@@ -96,7 +113,8 @@ public class MaterialsServiceImp implements MaterialsService {
             Materials existingMaterial = materialsRepository.findById(materialId)
                     .orElseThrow(() -> new ResourceNotFoundException("Material with ID " + materialId + " not found."));
 
-            modelMapper.map(updatedMaterial, existingMaterial);
+            existingMaterial.setMaterialName(updatedMaterial.getMaterialName());
+            existingMaterial.setMaterialType(updatedMaterial.getMaterialType());
 
             return materialsRepository.save(existingMaterial);
         } catch (ResourceNotFoundException | BadRequestException | DuplicateResourceException ex) {

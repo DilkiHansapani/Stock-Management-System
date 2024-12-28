@@ -36,32 +36,25 @@ public class CategoriesController extends AbstractController {
 
     @GetMapping
     public ResponseEntity<ResponseObject> getCategories(
-            @RequestParam(required = false) String categoryType,
+            @RequestParam(required = false) String searchTerm,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size
     ) {
         try {
-            Page<CategoriesDTOWithoutInventories> categories = categoriesService.getCategories(categoryType, PageRequest.of(page, size));
+            Page<CategoriesDTOWithoutInventories> categories = categoriesService.getCategories(searchTerm, PageRequest.of(page, size));
             return sendSuccessResponse(categories,HttpStatus.OK);
         } catch (InternalServerErrorException ex) {
             return sendErrorResponse(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @PutMapping("/{categoryId}")
-    public ResponseEntity<ResponseObject> updateCategory(
-            @PathVariable int categoryId,
-            @RequestBody CategoryDTOWithoutId updatedCategory
-    ) {
+    @GetMapping("/all")
+    public  ResponseEntity<ResponseObject> getAllCategories(){
         try {
-            Categories result = categoriesService.updateCategory(categoryId, updatedCategory);
-            return sendSuccessResponse(result,HttpStatus.OK);
-        } catch (BadRequestException ex) {
-            return sendErrorResponse(ex.getMessage(), HttpStatus.BAD_REQUEST);
-        } catch (ResourceNotFoundException ex) {
-            return sendErrorResponse(ex.getMessage(), HttpStatus.NOT_FOUND);
-        } catch (InternalServerErrorException ex) {
+            return sendSuccessResponse(categoriesService.getAllCategories(), HttpStatus.OK);
+        }catch (InternalServerErrorException ex) {
             return sendErrorResponse(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
 }

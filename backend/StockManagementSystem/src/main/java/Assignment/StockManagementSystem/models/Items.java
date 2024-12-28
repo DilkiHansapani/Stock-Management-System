@@ -9,6 +9,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -20,7 +21,7 @@ public class Items {
     private String itemCode;
 
     @NotNull(message = "Date and time cannot be null.")
-    private Date dateTime;
+    private LocalDateTime dateTime;
 
     @ManyToOne
     @JoinColumn(name = "inventoryId", nullable = false)
@@ -38,8 +39,10 @@ public class Items {
 
     private float salePercentage;
 
-    @Pattern(regexp = "^(normal|sale|stockclearing|soldout)$", message = "Status must be either 'normal', 'sale', 'stockclearing', or 'soldout'.")
+    @Pattern(regexp = "^(?i)(normal|sale|stockclearing|soldout)$", message = "Status must be either 'normal', 'sale', 'stockclearing', or 'soldout'.")
     private String status;
+
+
 
     public @NotNull(message = "Item code cannot be null.") String getItemCode() {
         return itemCode;
@@ -49,11 +52,11 @@ public class Items {
         this.itemCode = itemCode;
     }
 
-    public @NotNull(message = "Date and time cannot be null.") Date getDateTime() {
+    public @NotNull(message = "Date and time cannot be null.") LocalDateTime getDateTime() {
         return dateTime;
     }
 
-    public void setDateTime(@NotNull(message = "Date and time cannot be null.") Date dateTime) {
+    public void setDateTime(@NotNull(message = "Date and time cannot be null.") LocalDateTime dateTime) {
         this.dateTime = dateTime;
     }
 
@@ -100,11 +103,11 @@ public class Items {
         this.salePercentage = salePercentage;
     }
 
-    public @Pattern(regexp = "^(normal|sale|stockclearing|soldout)$", message = "Status must be either 'normal', 'sale', 'stockclearing', or 'soldout'.") String getStatus() {
+    public @Pattern(regexp = "^(normal|sale|stockClearing|soldout)$", message = "Status must be either 'normal', 'sale', 'stockclearing', or 'soldout'.") String getStatus() {
         return status;
     }
 
-    public void setStatus(@Pattern(regexp = "^(normal|sale|stockclearing|soldout)$", message = "Status must be either 'normal', 'sale', 'stockclearing', or 'soldout'.") String status) {
+    public void setStatus(@Pattern(regexp = "^(normal|sale|stockClearing|soldout)$", message = "Status must be either 'normal', 'sale', 'stockclearing', or 'soldout'.") String status) {
         this.status = status;
     }
 }

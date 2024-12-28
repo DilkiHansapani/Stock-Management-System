@@ -45,6 +45,15 @@ public class SellersController extends AbstractController {
         }
     }
 
+    @GetMapping("/all")
+    public ResponseEntity<ResponseObject> getAllSellers(){
+        try{
+            return sendSuccessResponse(sellersService.getAllSellers(),HttpStatus.OK);
+        }catch (InternalServerErrorException ex) {
+            return sendErrorResponse(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @PutMapping("/{sellerId}")
     public ResponseEntity<ResponseObject> updateSeller(
             @PathVariable int sellerId,

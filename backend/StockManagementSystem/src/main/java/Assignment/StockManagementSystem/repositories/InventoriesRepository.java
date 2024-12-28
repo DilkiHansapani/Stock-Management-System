@@ -21,13 +21,10 @@ public interface InventoriesRepository extends JpaRepository<Inventories,Integer
             "JOIN i.material m " +
             "JOIN i.seller s " +
             "JOIN i.category c " +
-            "WHERE (:materialName IS NULL OR :materialName = '' OR LOWER(m.materialName) LIKE LOWER(CONCAT('%', :materialName, '%'))) " +
-            "AND (:sellerName IS NULL OR :sellerName = '' OR LOWER(s.sellerName) LIKE LOWER(CONCAT('%', :sellerName, '%'))) " +
-            "AND (:categoryType IS NULL OR :categoryType = '' OR LOWER(c.categoryType) LIKE LOWER(CONCAT('%', :categoryType, '%')))")
+            "WHERE (:searchTerm IS NULL OR :searchTerm = '' OR " +
+            "m.materialType LIKE %:searchTerm% OR m.materialName LIKE %:searchTerm%) OR s.sellerName LIKE %:searchTerm% OR c.categoryType LIKE %:searchTerm%")
     Page<Inventories> getInventories(
-            @Param("materialName") String materialName,
-            @Param("sellerName") String sellerName,
-            @Param("categoryType") String categoryType,
+            @Param("searchTerm") String searchTerm,
             Pageable pageable);
 
     Optional<Inventories> findBySellerAndMaterialAndCategory(Sellers seller, Materials material, Categories category);

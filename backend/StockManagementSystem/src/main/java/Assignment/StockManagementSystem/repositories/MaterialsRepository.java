@@ -14,11 +14,10 @@ import java.util.Optional;
 public interface MaterialsRepository extends JpaRepository<Materials,Integer> {
 
     @Query("SELECT m FROM Materials m " +
-            "WHERE (:materialName IS NULL OR :materialName = '' OR m.materialName LIKE %:materialName%) " +
-            "AND (:materialType IS NULL OR :materialType = '' OR m.materialType LIKE %:materialType%)")
+            "WHERE (:searchTerm IS NULL OR :searchTerm = '' OR " +
+            "m.materialType LIKE %:searchTerm% OR m.materialName LIKE %:searchTerm%)")
     Page<Materials> findMaterials(
-            @Param("materialName") String materialName,
-            @Param("materialType") String materialType,
+            @Param("searchTerm") String searchTerm,
             Pageable pageable
     );
 

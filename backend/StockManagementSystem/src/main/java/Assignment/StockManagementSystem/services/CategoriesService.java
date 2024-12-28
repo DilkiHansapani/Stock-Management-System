@@ -7,6 +7,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public interface CategoriesService {
 
@@ -16,5 +18,7 @@ public interface CategoriesService {
 
     public Categories getCategoryById(int categoryId);
 
-    public Categories updateCategory(int categoryId, CategoryDTOWithoutId updatedCategory);
+//    public Categories updateCategory(int categoryId, CategoryDTOWithoutId updatedCategory);
+
+    public List<Categories> getAllCategories();
 }

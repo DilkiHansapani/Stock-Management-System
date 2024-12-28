@@ -1,17 +1,17 @@
 package Assignment.StockManagementSystem.services.implementation;
 
 import Assignment.StockManagementSystem.common.ErrorMessages;
+import Assignment.StockManagementSystem.dto.InventoryBulkUpdateDTO;
 import Assignment.StockManagementSystem.dto.InventoryDTOWithoutId;
 import Assignment.StockManagementSystem.dto.InventoryDTOWithoutItems;
-import Assignment.StockManagementSystem.models.Categories;
-import Assignment.StockManagementSystem.models.Inventories;
-import Assignment.StockManagementSystem.models.Materials;
-import Assignment.StockManagementSystem.models.Sellers;
+import Assignment.StockManagementSystem.models.*;
 import Assignment.StockManagementSystem.repositories.InventoriesRepository;
+import Assignment.StockManagementSystem.repositories.ItemsRepository;
 import Assignment.StockManagementSystem.services.*;
 import Assignment.StockManagementSystem.exceptions.BadRequestException;
 import Assignment.StockManagementSystem.exceptions.InternalServerErrorException;
 import Assignment.StockManagementSystem.exceptions.ResourceNotFoundException;
+import Assignment.StockManagementSystem.utils.ItemsUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.modelmapper.ModelMapper;
@@ -20,6 +20,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -31,6 +32,9 @@ public class InventoriesServiceImp implements InventoriesService {
 
     @Autowired
     private InventoriesRepository inventoriesRepository;
+
+    @Autowired
+    private ItemsRepository itemsRepository;
 
     @Autowired
     private ItemsService itemsService;
@@ -65,9 +69,9 @@ public class InventoriesServiceImp implements InventoriesService {
     }
 
     @Override
-    public Page<InventoryDTOWithoutItems> getInventories(String materialName, String sellerName, String categoryType, Pageable pageable) {
+    public Page<InventoryDTOWithoutItems> getInventories(String searchTerm, Pageable pageable) {
         try {
-            Page<Inventories> inventories = inventoriesRepository.getInventories(materialName, sellerName, categoryType, pageable);
+            Page<Inventories> inventories = inventoriesRepository.getInventories(searchTerm, pageable);
 
             return inventories.map(this::convertToInventoryDTO);
         } catch (Exception ex) {
@@ -77,18 +81,22 @@ public class InventoriesServiceImp implements InventoriesService {
     }
 
     @Override
-    public Inventories updateInventory(int inventoryId, InventoryDTOWithoutId updatedInventory) {
+    public Inventories updateInventory(int inventoryId, InventoryBulkUpdateDTO updatedInventory) {
         try {
-            if (inventoryId == 0) {
+            if (inventoryId <= 0) {
                 throw new BadRequestException("Inventory ID must be provided.");
             }
 
             Inventories existingInventory = inventoriesRepository.findById(inventoryId)
                     .orElseThrow(() -> new ResourceNotFoundException("Inventory with ID " + inventoryId + " not found."));
 
-            modelMapper.map(updatedInventory, existingInventory);
+            List<Items> itemsToUpdate = itemsService.getItemsByInventory(existingInventory, updatedInventory.getBulkQuantity());
 
-            return inventoriesRepository.save(existingInventory);
+            processItemsForUpdate(itemsToUpdate, updatedInventory);
+
+            itemsRepository.saveAll(itemsToUpdate);
+
+            return existingInventory;
         } catch (ResourceNotFoundException | BadRequestException ex) {
             throw ex;
         } catch (Exception ex) {
@@ -96,6 +104,59 @@ public class InventoriesServiceImp implements InventoriesService {
             throw new InternalServerErrorException("An error occurred while updating the inventory. Please try again.");
         }
     }
+
+    private void processItemsForUpdate(List<Items> items, InventoryBulkUpdateDTO updatedInventory) {
+        try {
+            switch (updatedInventory.getStatus()) {
+                case "stockClearing":
+                    updateItemsForStockClearing(items, updatedInventory.getSellingPrice(), updatedInventory.getStatus());
+                    break;
+
+                case "sale":
+                    updateItemsForSale(items, updatedInventory.getSalePercentage(), updatedInventory.getStatus());
+                    break;
+
+                default:
+                    throw new BadRequestException("Invalid status provided for inventory update.");
+            }
+        } catch (Exception ex) {
+            logger.error("Error processing items for inventory update with status {}", updatedInventory.getStatus(), ex);
+            throw ex;
+        }
+    }
+
+    private void updateItemsForStockClearing(List<Items> items, float sellingPrice, String status) {
+        try {
+            for (Items item : items) {
+                item.setSellingPrice(sellingPrice);
+                item.setStatus(status);
+            }
+        } catch (Exception ex) {
+            logger.error("Error updating items for stock clearing", ex);
+            throw ex;
+        }
+    }
+
+    private void updateItemsForSale(List<Items> items, float salePercentage, String status) {
+        try {
+            for (Items item : items) {
+                float sellingPrice = ItemsUtil.calculateSellingPrice(
+                        item.getBuyingPrice(),
+                        item.getProfitPercentage(),
+                        salePercentage,
+                        item.getSellingPrice(),
+                        status
+                );
+                item.setSellingPrice(sellingPrice);
+                item.setSalePercentage(salePercentage);
+                item.setStatus(status);
+            }
+        } catch (Exception ex) {
+            logger.error("Error updating items for sale", ex);
+            throw ex;
+        }
+    }
+
 
     private Sellers getSeller(int sellerId) {
         return sellersService.getSellerById(sellerId);
