@@ -27,7 +27,6 @@ const SellerForm = ({
           editingSeller.sellerId,
           updatedSeller
         );
-        console.log("response of update :", response);
         if (response.status === CONSTANTS.HttpStatusString.OK) {
           message.success("Seller updated successfully!");
           onUpdateSeller(updatedSeller);
@@ -37,6 +36,7 @@ const SellerForm = ({
         if (response.status === CONSTANTS.HttpStatus.CREATED) {
           message.success("Seller added successfully!");
           onFormSubmit(response.data);
+          form.resetFields();
         }
       }
       onClose();

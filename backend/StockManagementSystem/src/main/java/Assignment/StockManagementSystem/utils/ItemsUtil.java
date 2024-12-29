@@ -5,8 +5,8 @@ import Assignment.StockManagementSystem.exceptions.InvalidSellingPriceException;
 
 public class ItemsUtil {
 
-    public static String generateItemCode(String sellerName, String materialName, String materialType, int index) {
-        return String.format("%s-%s-%s-%d", sellerName, materialName, materialType, index);
+    public static String generateItemCode(String sellerName, String materialName, String materialType,int inventoryId, int index) {
+        return String.format("%s-%s-%s-%s-%d", sellerName, materialName, materialType,inventoryId, index);
     }
 
     public static float calculateSellingPrice(float buyingPrice, float profitPercentage, float salePercentage,
