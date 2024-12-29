@@ -1,8 +1,11 @@
 # Use the official MySQL image as the base image
 FROM mysql:9.1.0
 
-# Copy the initialization script to the MySQL entrypoint directory
-COPY ./init.sql /docker-entrypoint-initdb.d/
+# Create a directory for initialization scripts
+WORKDIR /docker-entrypoint-initdb.d
+
+# Copy initialization scripts into the container
+COPY ./init.sql /docker-entrypoint-initdb.d/init.sql
 
 # Set environment variables (optional, can be overridden in docker-compose)
 ENV MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
