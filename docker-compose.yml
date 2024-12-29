@@ -10,6 +10,7 @@ services:
       SPRING_PROFILES_ACTIVE: dev
     depends_on:
       - database
+    restart: on-failure
 
   frontend:
     build:
@@ -18,6 +19,7 @@ services:
     container_name: stock_management_system_frontend
     ports:
       - "3000:80"
+    restart: on-failure
 
   database:
     build:
@@ -33,4 +35,4 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
       - ./database/data:/var/lib/mysql
-      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    restart: on-failure
